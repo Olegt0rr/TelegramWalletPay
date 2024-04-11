@@ -1,9 +1,10 @@
+from collections.abc import Iterator
 from datetime import datetime
 from typing import Literal
 
-from pydantic import Field, RootModel
+from pydantic import Field
 
-from ._default import DefaultModel
+from ._default import DefaultModel, DefaultRootModel
 from .webhook_payload import WebhookPayload
 
 
@@ -14,4 +15,10 @@ class Update(DefaultModel):
     payload: WebhookPayload
 
 
-Updates = RootModel(list[Update])
+class Updates(DefaultRootModel):
+    """Список чатов."""
+
+    root: list[Update]
+
+    def __iter__(self) -> Iterator[Update]:
+        return iter(self.root)
