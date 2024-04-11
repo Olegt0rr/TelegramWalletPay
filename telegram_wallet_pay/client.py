@@ -1,5 +1,4 @@
 import asyncio
-import json
 import logging
 import ssl
 from collections.abc import Mapping
@@ -9,7 +8,7 @@ from typing import Literal, Optional, Union
 
 from aiohttp import ClientResponse, ClientSession, TCPConnector
 
-from telegram_wallet_pay.schemas.order import MoneyAmount, OrderNew, OrderResult
+from telegram_wallet_pay.schemas import MoneyAmount, OrderNew, OrderResult
 
 AUTH_HEADER = "Wpay-Store-Api-Key"
 DEFAULT_API_HOST = "https://pay.wallet.tg"
@@ -20,7 +19,7 @@ class TelegramWalletPay:
 
     async def create_order(
         self,
-        amount: Union[str, Decimal, int, float],
+        amount: Union[str, Decimal, float],
         currency_code: Literal["TON", "BTC", "USDT", "EUR", "USD", "RUB"],
         description: str,
         external_id: str,
