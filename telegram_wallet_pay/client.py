@@ -3,11 +3,11 @@ import logging
 import ssl
 from contextlib import asynccontextmanager
 from decimal import Decimal
-from typing import AsyncIterator, Literal, Mapping, Optional, Union
+from typing import Any, AsyncIterator, Dict, Literal, Mapping, Optional, Union
 
 from aiohttp import ClientResponse, ClientSession, TCPConnector
 
-from telegram_wallet_pay.schemas import MoneyAmount, OrderNew, OrderResult
+from telegram_wallet_pay import schemas
 
 AUTH_HEADER = "Wpay-Store-Api-Key"
 DEFAULT_API_HOST = "https://pay.wallet.tg"
@@ -28,10 +28,10 @@ class TelegramWalletPay:
         return_url: Optional[str] = None,
         fail_return_url: Optional[str] = None,
         custom_data: Optional[str] = None,
-    ) -> OrderResult:
+    ) -> schemas.OrderResult:
         """Create an order."""
-        order_new = OrderNew(
-            amount=MoneyAmount(
+        order_new = schemas.OrderNew(
+            amount=schemas.MoneyAmount(
                 amount=str(amount),
                 currency_code=currency_code,
             ),
@@ -53,9 +53,9 @@ class TelegramWalletPay:
             json_data = await response.text()
             self.log.info("Received answer: %s", json_data)
 
-        return OrderResult.model_validate_json(json_data)
+        return schemas.OrderResult.model_validate_json(json_data)
 
-    async def get_preview(self, order_id: str) -> OrderResult:
+    async def get_preview(self, order_id: str) -> schemas.OrderResult:
         """Retrieve the order information."""
         async with self._make_request(
             method="GET",
@@ -64,7 +64,31 @@ class TelegramWalletPay:
         ) as response:  # type: ClientResponse
             json_data = await response.text()
 
-        return OrderResult.model_validate_json(json_data)
+        return schemas.OrderResult.model_validate_json(json_data)
+
+    async def get_order_list(
+        self,
+        *,
+        offset: int,
+        count: int,
+    ) -> schemas.OrderReconciliationResult:
+        """Get list of store orders.
+
+        Items sorted by creation time in ascending order.
+        """
+        query_params: Dict[str, Any] = {
+            "offset": offset,
+            "count": count,
+        }
+
+        async with self._make_request(
+            method="GET",
+            url="/wpay/store-api/v1/reconciliation/order-list",
+            params=query_params,
+        ) as response:  # type: ClientResponse
+            json_data = await response.text()
+
+        return schemas.OrderReconciliationResult.model_validate_json(json_data)
 
     def __init__(self, token: str, api_host: str = DEFAULT_API_HOST) -> None:
         self.log = logging.getLogger(self.__class__.__name__)

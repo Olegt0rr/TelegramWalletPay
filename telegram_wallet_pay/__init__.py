@@ -1,4 +1,4 @@
-__version__ = "0.0.5"
+__version__ = "0.0.6"
 __api_version__ = "v1"
 __all__ = ["TelegramWalletPay"]
 
