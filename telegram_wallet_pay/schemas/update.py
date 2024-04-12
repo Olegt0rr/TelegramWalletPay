@@ -18,5 +18,5 @@ class Updates(DefaultRootModel):
 
     root: List[Update]
 
-    def __iter__(self) -> Iterator[Update]:
+    def __iter__(self) -> Iterator[Update]:  # type: ignore[override]
         return iter(self.root)

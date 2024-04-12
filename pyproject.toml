@@ -54,8 +54,8 @@ test = [
     "pytest>=8",
     "pytest-asyncio>=0",
     "pytest-cov>=5",
+    "aresponses==3.0.0",
 ]
-
 
 
 [project.urls]

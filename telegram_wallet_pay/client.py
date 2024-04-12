@@ -3,7 +3,7 @@ import logging
 import ssl
 from contextlib import asynccontextmanager
 from decimal import Decimal
-from typing import Literal, Optional, Union, Mapping
+from typing import AsyncIterator, Literal, Mapping, Optional, Union
 
 from aiohttp import ClientResponse, ClientSession, TCPConnector
 
@@ -94,7 +94,7 @@ class TelegramWalletPay:
         url: str,
         params: Optional[Mapping[str, str]] = None,
         json: Optional[Mapping[str, str]] = None,
-    ) -> ClientResponse:
+    ) -> AsyncIterator[ClientResponse]:
         """Make request and return decoded json response."""
         session = await self._get_session()
 
@@ -112,10 +112,6 @@ class TelegramWalletPay:
         """Graceful session close."""
         if not self._session:
             self.log.debug("There's not session to close.")
-            return
-
-        if self._session.closed:
-            self.log.debug("Session already closed.")
             return
 
         await self._session.close()
