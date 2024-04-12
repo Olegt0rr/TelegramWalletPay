@@ -12,7 +12,7 @@ on:
       - "pyproject.toml"
   pull_request:
     branches:
-      - dev-3.x
+      - main
     paths:
       - ".github/workflows/tests.yml"
       - "telegram_wallet_pay/**"
