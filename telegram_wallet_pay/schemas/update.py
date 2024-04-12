@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Literal, Iterator
+from typing import Iterator, List, Literal
 
 from pydantic import Field
 
@@ -15,8 +15,8 @@ class Update(DefaultModel):
 
 
 class Updates(DefaultRootModel):
-
     root: List[Update]
 
-    def __iter__(self) -> Iterator[Update]:
+    def __iter__(self) -> Iterator[Update]:  # type: ignore[override]
+        """Iterate over root model."""
         return iter(self.root)
