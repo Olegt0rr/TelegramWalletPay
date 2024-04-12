@@ -1,1 +1,65 @@
-# TelegramWalletPay
+# Telegram Wallet Pay
+
+Python async client for [Telegram Wallet Pay API](https://pay.wallet.tg) made of `aiohttp` and `pydantic`
+
+[![Python](https://img.shields.io/badge/python-^3.8-blue)](https://www.python.org/)
+[![Code linter: ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v1.json)](https://github.com/charliermarsh/ruff)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+[![Linters](https://github.com/Olegt0rr/YaTracker/actions/workflows/linters.yml/badge.svg)](https://github.com/Olegt0rr/YaTracker/actions/workflows/linters.yml)
+---
+
+## Get started
+
+### Read Telegram Wallet Pay API docs
+
+https://docs.wallet.tg/pay/#section/Get-started
+
+### Install our library
+
+```
+pip install telegram-wallet-pay
+```
+
+### Create order
+
+```python
+import asyncio
+import os
+from uuid import uuid4
+
+from telegram_wallet_pay import TelegramWalletPay
+
+# use your token from wallet pay
+TOKEN = os.getenv("TELEGRAM_WALLET_PAY_TOKEN")
+
+
+async def main():
+    # create API-client instance
+    wallet = TelegramWalletPay(TOKEN)
+
+    # create your first order
+    result = await wallet.create_order(
+        amount=40,
+        currency_code="RUB",
+        description="Test Payment",
+        external_id=str(uuid4()),
+        timeout_seconds=5 * 60,
+        customer_telegram_user_id=66812456,
+    )
+
+    # let's print creation result
+    print("Result:", result)
+    print("Order:", result.data)
+
+    # also you can update order status via `get_preview` method
+    result = await wallet.get_preview(result.data.id)
+    print("Updated Order Preview:", result.data)
+
+    # don't forget close API-client instance on your app shutdown
+    await wallet.close()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+```
