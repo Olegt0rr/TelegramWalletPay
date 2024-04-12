@@ -1,5 +1,7 @@
 __all__ = [
     "MoneyAmount",
+    "OrderAmount",
+    "OrderAmountResult",
     "OrderNew",
     "OrderPreview",
     "OrderReconciliationItem",
@@ -13,6 +15,8 @@ __all__ = [
 ]
 
 from .money_amount import MoneyAmount
+from .order_amount import OrderAmount
+from .order_amount_result import OrderAmountResult
 from .order_new import OrderNew
 from .order_preview import OrderPreview
 from .order_reconciliation_item import OrderReconciliationItem

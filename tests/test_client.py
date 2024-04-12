@@ -6,6 +6,8 @@ from aresponses import ResponsesMockServer
 from telegram_wallet_pay import TelegramWalletPay
 from telegram_wallet_pay.schemas import (
     MoneyAmount,
+    OrderAmount,
+    OrderAmountResult,
     OrderPreview,
     OrderReconciliationItem,
     OrderReconciliationList,
@@ -43,6 +45,12 @@ SUCCESS_GET_ORDERS_LIST_REQUEST = OrderReconciliationResult(
     status="SUCCESS",
     message=None,
     data=OrderReconciliationList(items=[]),
+)
+
+SUCCESS_ORDER_AMOUNT_RESULT = OrderAmountResult(
+    status="SUCCESS",
+    message="",
+    data=OrderAmount(total_amount=42),
 )
 
 
@@ -130,6 +138,30 @@ class TestGetOrderList:
         )
         result = await wallet.get_order_list(offset=0, count=10)
         assert result == SUCCESS_GET_ORDERS_LIST_REQUEST
+        aresponses.assert_plan_strictly_followed()
+
+
+class TestGetOrderAmount:
+    METHOD = "GET"
+    URI = "/wpay/store-api/v1/reconciliation/order-amount"
+
+    async def test_success(
+        self,
+        wallet: TelegramWalletPay,
+        aresponses: ResponsesMockServer,
+    ) -> None:
+        """Test successful getting Order preview."""
+        aresponses.add(
+            path_pattern=self.URI,
+            method_pattern=self.METHOD,
+            response=aresponses.Response(
+                text=SUCCESS_ORDER_AMOUNT_RESULT.model_dump_json(by_alias=True),
+                content_type="application/json",
+                status=200,
+            ),
+        )
+        result = await wallet.get_order_amount()
+        assert result == SUCCESS_ORDER_AMOUNT_RESULT
         aresponses.assert_plan_strictly_followed()
 
 
