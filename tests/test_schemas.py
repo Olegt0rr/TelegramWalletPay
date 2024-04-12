@@ -6,8 +6,8 @@ from pydantic import BaseModel, RootModel
 from telegram_wallet_pay.schemas import (
     MoneyAmount,
     PaymentOption,
-    Update,
-    Updates,
+    WebhookMessage,
+    WebhookMessages,
     WebhookPayload,
 )
 
@@ -27,7 +27,7 @@ payload = WebhookPayload(
     selected_payment_option=payment_option,
     order_completed_datetime=datetime.now(),
 )
-update = Update(
+update = WebhookMessage(
     event_datetime=datetime.now(),
     event_id=1,
     type="ORDER_PAID",
@@ -38,7 +38,7 @@ update = Update(
 @pytest.mark.parametrize(
     ("schema", "data"),
     [
-        (Updates, [update.model_dump(by_alias=True)]),
+        (WebhookMessages, [update.model_dump(by_alias=True)]),
     ],
 )
 def test_iteration(schema: RootModel, data: List[Dict[str, Any]]) -> None:

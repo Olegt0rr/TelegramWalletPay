@@ -5,17 +5,18 @@ import pytest
 from aresponses import ResponsesMockServer
 from telegram_wallet_pay import TelegramWalletPay
 from telegram_wallet_pay.schemas import (
+    CreateOrderResponse,
+    GetOrderPreviewResponse,
+    GetOrderReconciliationListResponse,
     MoneyAmount,
     OrderAmount,
-    OrderAmountResult,
+    OrderAmountResponse,
     OrderPreview,
     OrderReconciliationItem,
     OrderReconciliationList,
-    OrderReconciliationResult,
-    OrderResult,
 )
 
-SUCCESS_ORDER_PREVIEW = OrderPreview(
+ORDER_PREVIEW = OrderPreview(
     id="",
     status="ACTIVE",
     number="",
@@ -26,10 +27,16 @@ SUCCESS_ORDER_PREVIEW = OrderPreview(
     direct_pay_link="",
 )
 
-SUCCESS_RESPONSE = OrderResult(
+CREATE_ORDER_RESPONSE = CreateOrderResponse(
     status="SUCCESS",
     message="",
-    data=SUCCESS_ORDER_PREVIEW,
+    data=ORDER_PREVIEW,
+)
+
+GET_ORDER_PREVIEW_RESPONSE = GetOrderPreviewResponse(
+    status="SUCCESS",
+    message="",
+    data=ORDER_PREVIEW,
 )
 
 ORDER_RECONCILIATION_ITEM = OrderReconciliationItem(
@@ -41,13 +48,13 @@ ORDER_RECONCILIATION_ITEM = OrderReconciliationItem(
     expiration_datetime=datetime.now(),
 )
 
-SUCCESS_GET_ORDERS_LIST_REQUEST = OrderReconciliationResult(
+GET_ORDERS_LIST_RESPONSE = GetOrderReconciliationListResponse(
     status="SUCCESS",
     message=None,
     data=OrderReconciliationList(items=[]),
 )
 
-SUCCESS_ORDER_AMOUNT_RESULT = OrderAmountResult(
+ORDER_AMOUNT_RESPONSE = OrderAmountResponse(
     status="SUCCESS",
     message="",
     data=OrderAmount(total_amount=42),
@@ -76,20 +83,20 @@ class TestCreateOrder:
             path_pattern=self.URI,
             method_pattern=self.METHOD,
             response=aresponses.Response(
-                text=SUCCESS_RESPONSE.model_dump_json(by_alias=True),
+                text=CREATE_ORDER_RESPONSE.model_dump_json(by_alias=True),
                 content_type="application/json",
                 status=200,
             ),
         )
-        result = await wallet.create_order(
-            amount=SUCCESS_ORDER_PREVIEW.amount.amount,
-            currency_code=SUCCESS_ORDER_PREVIEW.amount.currency_code,
+        response = await wallet.create_order(
+            amount=ORDER_PREVIEW.amount.amount,
+            currency_code=ORDER_PREVIEW.amount.currency_code,
             description="description",
             external_id="",
             timeout_seconds=30,
             customer_telegram_user_id=42,
         )
-        assert result == SUCCESS_RESPONSE
+        assert response == CREATE_ORDER_RESPONSE
         aresponses.assert_plan_strictly_followed()
 
 
@@ -107,13 +114,13 @@ class TestGetPreview:
             path_pattern=self.URI,
             method_pattern=self.METHOD,
             response=aresponses.Response(
-                text=SUCCESS_RESPONSE.model_dump_json(by_alias=True),
+                text=GET_ORDER_PREVIEW_RESPONSE.model_dump_json(by_alias=True),
                 content_type="application/json",
                 status=200,
             ),
         )
-        result = await wallet.get_preview(SUCCESS_ORDER_PREVIEW.id)
-        assert result == SUCCESS_RESPONSE
+        response = await wallet.get_preview(ORDER_PREVIEW.id)
+        assert response == GET_ORDER_PREVIEW_RESPONSE
         aresponses.assert_plan_strictly_followed()
 
 
@@ -131,13 +138,13 @@ class TestGetOrderList:
             path_pattern=self.URI,
             method_pattern=self.METHOD,
             response=aresponses.Response(
-                text=SUCCESS_GET_ORDERS_LIST_REQUEST.model_dump_json(by_alias=True),
+                text=GET_ORDERS_LIST_RESPONSE.model_dump_json(by_alias=True),
                 content_type="application/json",
                 status=200,
             ),
         )
-        result = await wallet.get_order_list(offset=0, count=10)
-        assert result == SUCCESS_GET_ORDERS_LIST_REQUEST
+        response = await wallet.get_order_list(offset=0, count=10)
+        assert response == GET_ORDERS_LIST_RESPONSE
         aresponses.assert_plan_strictly_followed()
 
 
@@ -155,13 +162,13 @@ class TestGetOrderAmount:
             path_pattern=self.URI,
             method_pattern=self.METHOD,
             response=aresponses.Response(
-                text=SUCCESS_ORDER_AMOUNT_RESULT.model_dump_json(by_alias=True),
+                text=ORDER_AMOUNT_RESPONSE.model_dump_json(by_alias=True),
                 content_type="application/json",
                 status=200,
             ),
         )
-        result = await wallet.get_order_amount()
-        assert result == SUCCESS_ORDER_AMOUNT_RESULT
+        response = await wallet.get_order_amount()
+        assert response == ORDER_AMOUNT_RESPONSE
         aresponses.assert_plan_strictly_followed()
 
 

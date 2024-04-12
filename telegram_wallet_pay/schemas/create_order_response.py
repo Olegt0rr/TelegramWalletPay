@@ -4,7 +4,7 @@ from ._default import DefaultModel
 from .order_preview import OrderPreview
 
 
-class OrderResult(DefaultModel):
+class CreateOrderResponse(DefaultModel):
     status: Literal[
         "SUCCESS",
         "ALREADY",

@@ -10,7 +10,7 @@ TOKEN = os.getenv("TELEGRAM_WALLET_PAY_TOKEN")
 async def main():
     wallet = TelegramWalletPay(TOKEN)
 
-    result = await wallet.create_order(
+    response = await wallet.create_order(
         amount=40,
         currency_code="RUB",
         description="TestPayment",
@@ -19,11 +19,11 @@ async def main():
         customer_telegram_user_id=66812456,
     )
 
-    print("Result:", result)
-    print("Order:", result.data)
+    print("Response:", response)
+    print("Order:", response.data)
 
-    result = await wallet.get_preview(result.data.id)
-    print("Updated Order Preview:", result.data)
+    response = await wallet.get_preview(response.data.id)
+    print("Updated Order Preview:", response.data)
 
     await wallet.close()
 
