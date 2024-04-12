@@ -1,23 +1,65 @@
 import asyncio
-import logging
 import ssl
 from contextlib import asynccontextmanager
 from decimal import Decimal
-from typing import Any, AsyncIterator, Dict, Literal, Mapping, Optional, Union
+from http import HTTPStatus
+from typing import (
+    Any,
+    AsyncIterator,
+    Dict,
+    Literal,
+    Mapping,
+    Optional,
+    Type,
+    TypeVar,
+    Union,
+)
 
 from aiohttp import ClientResponse, ClientSession, TCPConnector
+from pydantic import BaseModel
 
-from telegram_wallet_pay import schemas
+from telegram_wallet_pay.errors import (
+    InvalidAPIKeyError,
+    InvalidRequestError,
+    NotFountError,
+    RequestLimitReachedError,
+    TelegramWalletPayError,
+    UnexpectedError,
+)
+from telegram_wallet_pay.schemas import (
+    CreateOrderRequest,
+    CreateOrderResponse,
+    GetOrderPreviewResponse,
+    GetOrderReconciliationListResponse,
+    MoneyAmount,
+    OrderAmountResponse,
+)
+
+T = TypeVar("T", bound=BaseModel)
 
 AUTH_HEADER = "Wpay-Store-Api-Key"
 DEFAULT_API_HOST = "https://pay.wallet.tg"
+
+EXCEPTIONS_MAPPING: Dict[Union[HTTPStatus, int], Type[TelegramWalletPayError]] = {
+    HTTPStatus.BAD_REQUEST: InvalidRequestError,
+    HTTPStatus.UNAUTHORIZED: InvalidAPIKeyError,
+    HTTPStatus.NOT_FOUND: NotFountError,
+    HTTPStatus.TOO_MANY_REQUESTS: RequestLimitReachedError,
+    HTTPStatus.INTERNAL_SERVER_ERROR: UnexpectedError,
+}
 
 
 class TelegramWalletPay:
     """Telegram Wallet API client."""
 
+    def __init__(self, token: str, api_host: str = DEFAULT_API_HOST) -> None:
+        self._base_url = api_host
+        self._session: Optional[ClientSession] = None
+        self._headers = {AUTH_HEADER: token}
+
     async def create_order(  # noqa: PLR0913
         self,
+        *,
         amount: Union[str, Decimal, float],
         currency_code: Literal["TON", "BTC", "USDT", "EUR", "USD", "RUB"],
         description: str,
@@ -28,10 +70,10 @@ class TelegramWalletPay:
         return_url: Optional[str] = None,
         fail_return_url: Optional[str] = None,
         custom_data: Optional[str] = None,
-    ) -> schemas.OrderResult:
+    ) -> CreateOrderResponse:
         """Create an order."""
-        order_new = schemas.OrderNew(
-            amount=schemas.MoneyAmount(
+        create_order_request = CreateOrderRequest(
+            amount=MoneyAmount(
                 amount=str(amount),
                 currency_code=currency_code,
             ),
@@ -48,30 +90,25 @@ class TelegramWalletPay:
         async with self._make_request(
             method="POST",
             url="/wpay/store-api/v1/order",
-            json=order_new.model_dump(by_alias=True),
-        ) as response:  # type: ClientResponse
-            json_data = await response.text()
-            self.log.info("Received answer: %s", json_data)
+            json=create_order_request.model_dump(by_alias=True),
+        ) as response:
+            return await self._prepare_result(response, CreateOrderResponse)
 
-        return schemas.OrderResult.model_validate_json(json_data)
-
-    async def get_preview(self, order_id: str) -> schemas.OrderResult:
+    async def get_preview(self, order_id: str) -> GetOrderPreviewResponse:
         """Retrieve the order information."""
         async with self._make_request(
             method="GET",
             url="/wpay/store-api/v1/order/preview",
             params={"id": order_id},
-        ) as response:  # type: ClientResponse
-            json_data = await response.text()
-
-        return schemas.OrderResult.model_validate_json(json_data)
+        ) as response:
+            return await self._prepare_result(response, GetOrderPreviewResponse)
 
     async def get_order_list(
         self,
         *,
         offset: int,
         count: int,
-    ) -> schemas.OrderReconciliationResult:
+    ) -> GetOrderReconciliationListResponse:
         """Get list of store orders.
 
         Items sorted by creation time in ascending order.
@@ -85,12 +122,13 @@ class TelegramWalletPay:
             method="GET",
             url="/wpay/store-api/v1/reconciliation/order-list",
             params=query_params,
-        ) as response:  # type: ClientResponse
-            json_data = await response.text()
+        ) as response:
+            return await self._prepare_result(
+                response,
+                GetOrderReconciliationListResponse,
+            )
 
-        return schemas.OrderReconciliationResult.model_validate_json(json_data)
-
-    async def get_order_amount(self) -> schemas.OrderAmountResult:
+    async def get_order_amount(self) -> OrderAmountResponse:
         """Get total count of all created orders in the Store.
 
         Including all - paid and unpaid.
@@ -98,17 +136,19 @@ class TelegramWalletPay:
         async with self._make_request(
             method="GET",
             url="/wpay/store-api/v1/reconciliation/order-amount",
-        ) as response:  # type: ClientResponse
-            json_data = await response.text()
+        ) as response:
+            return await self._prepare_result(response, OrderAmountResponse)
 
-        return schemas.OrderAmountResult.model_validate_json(json_data)
+    async def close(self) -> None:
+        """Graceful session close."""
+        if not self._session:
+            return
 
-    def __init__(self, token: str, api_host: str = DEFAULT_API_HOST) -> None:
-        self.log = logging.getLogger(self.__class__.__name__)
+        await self._session.close()
 
-        self._base_url = api_host
-        self._session: Optional[ClientSession] = None
-        self._headers = {AUTH_HEADER: token}
+        # Wait 250 ms for the underlying SSL connections to close
+        # https://docs.aiohttp.org/en/stable/client_advanced.html#graceful-shutdown
+        await asyncio.sleep(0.25)
 
     async def _get_session(self) -> ClientSession:
         """Get aiohttp session with cache."""
@@ -134,26 +174,17 @@ class TelegramWalletPay:
     ) -> AsyncIterator[ClientResponse]:
         """Make request and return decoded json response."""
         session = await self._get_session()
-
-        self.log.debug(
-            "Making request %r %r with json %r and params %r",
-            method,
-            url,
-            json,
-            params,
-        )
         async with session.request(method, url, params=params, json=json) as response:
             yield response
 
-    async def close(self) -> None:
-        """Graceful session close."""
-        if not self._session:
-            self.log.debug("There's not session to close.")
-            return
+    @staticmethod
+    async def _prepare_result(response: ClientResponse, schema: Type[T]) -> T:
+        """Process error response."""
+        status = response.status
+        body = await response.text()
 
-        await self._session.close()
-        self.log.debug("Session successfully closed.")
+        if status == HTTPStatus.OK:
+            return schema.model_validate_json(body)
 
-        # Wait 250 ms for the underlying SSL connections to close
-        # https://docs.aiohttp.org/en/stable/client_advanced.html#graceful-shutdown
-        await asyncio.sleep(0.25)
+        exc_type = EXCEPTIONS_MAPPING.get(status, TelegramWalletPayError)
+        raise exc_type(body)

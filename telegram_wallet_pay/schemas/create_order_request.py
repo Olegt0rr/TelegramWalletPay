@@ -6,7 +6,7 @@ from ._default import DefaultModel
 from .money_amount import MoneyAmount
 
 
-class OrderNew(DefaultModel):
+class CreateOrderRequest(DefaultModel):
     amount: MoneyAmount
     auto_conversion_currency: Optional[Literal["TON", "BTC", "USDT"]] = None
     description: str = Field(min_length=5, max_length=100)

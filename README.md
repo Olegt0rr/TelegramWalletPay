@@ -39,7 +39,7 @@ async def main():
     wallet = TelegramWalletPay(TOKEN)
 
     # create your first order
-    result = await wallet.create_order(
+    response = await wallet.create_order(
         amount=40,
         currency_code="RUB",
         description="Test Payment",
@@ -48,13 +48,13 @@ async def main():
         customer_telegram_user_id=66812456,
     )
 
-    # let's print creation result
-    print("Result:", result)
-    print("Order:", result.data)
+    # let's print creation response
+    print("Response:", response)
+    print("Order:", response.data)
 
     # also you can update order status via `get_preview` method
-    result = await wallet.get_preview(result.data.id)
-    print("Updated Order Preview:", result.data)
+    response = await wallet.get_preview(response.data.id)
+    print("Updated Order Preview:", response.data)
 
     # don't forget close API-client instance on your app shutdown
     await wallet.close()
