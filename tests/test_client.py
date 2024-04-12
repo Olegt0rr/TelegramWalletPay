@@ -4,7 +4,14 @@ from typing import AsyncIterator
 import pytest
 from aresponses import ResponsesMockServer
 from telegram_wallet_pay import TelegramWalletPay
-from telegram_wallet_pay.schemas import MoneyAmount, OrderPreview, OrderResult
+from telegram_wallet_pay.schemas import (
+    MoneyAmount,
+    OrderPreview,
+    OrderReconciliationItem,
+    OrderReconciliationList,
+    OrderReconciliationResult,
+    OrderResult,
+)
 
 SUCCESS_ORDER_PREVIEW = OrderPreview(
     id="",
@@ -21,6 +28,21 @@ SUCCESS_RESPONSE = OrderResult(
     status="SUCCESS",
     message="",
     data=SUCCESS_ORDER_PREVIEW,
+)
+
+ORDER_RECONCILIATION_ITEM = OrderReconciliationItem(
+    id=42,
+    status="EXPIRED",
+    amount=MoneyAmount(currency_code="RUB", amount="42.0"),
+    external_id="",
+    created_datetime=datetime.now(),
+    expiration_datetime=datetime.now(),
+)
+
+SUCCESS_GET_ORDERS_LIST_REQUEST = OrderReconciliationResult(
+    status="SUCCESS",
+    message=None,
+    data=OrderReconciliationList(items=[]),
 )
 
 
@@ -84,6 +106,30 @@ class TestGetPreview:
         )
         result = await wallet.get_preview(SUCCESS_ORDER_PREVIEW.id)
         assert result == SUCCESS_RESPONSE
+        aresponses.assert_plan_strictly_followed()
+
+
+class TestGetOrderList:
+    METHOD = "GET"
+    URI = "/wpay/store-api/v1/reconciliation/order-list"
+
+    async def test_success(
+        self,
+        wallet: TelegramWalletPay,
+        aresponses: ResponsesMockServer,
+    ) -> None:
+        """Test successful getting Order preview."""
+        aresponses.add(
+            path_pattern=self.URI,
+            method_pattern=self.METHOD,
+            response=aresponses.Response(
+                text=SUCCESS_GET_ORDERS_LIST_REQUEST.model_dump_json(by_alias=True),
+                content_type="application/json",
+                status=200,
+            ),
+        )
+        result = await wallet.get_order_list(offset=0, count=10)
+        assert result == SUCCESS_GET_ORDERS_LIST_REQUEST
         aresponses.assert_plan_strictly_followed()
 
 
