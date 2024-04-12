@@ -90,6 +90,19 @@ class TelegramWalletPay:
 
         return schemas.OrderReconciliationResult.model_validate_json(json_data)
 
+    async def get_order_amount(self) -> schemas.OrderAmountResult:
+        """Get total count of all created orders in the Store.
+
+        Including all - paid and unpaid.
+        """
+        async with self._make_request(
+            method="GET",
+            url="/wpay/store-api/v1/reconciliation/order-amount",
+        ) as response:  # type: ClientResponse
+            json_data = await response.text()
+
+        return schemas.OrderAmountResult.model_validate_json(json_data)
+
     def __init__(self, token: str, api_host: str = DEFAULT_API_HOST) -> None:
         self.log = logging.getLogger(self.__class__.__name__)
 
