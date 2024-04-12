@@ -16,7 +16,7 @@ DEFAULT_API_HOST = "https://pay.wallet.tg"
 class TelegramWalletPay:
     """Telegram Wallet API client."""
 
-    async def create_order(
+    async def create_order(  # noqa: PLR0913
         self,
         amount: Union[str, Decimal, float],
         currency_code: Literal["TON", "BTC", "USDT", "EUR", "USD", "RUB"],

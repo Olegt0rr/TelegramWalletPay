@@ -3,7 +3,6 @@ from typing import Any, Dict, List
 
 import pytest
 from pydantic import BaseModel, RootModel
-
 from telegram_wallet_pay.schemas import (
     MoneyAmount,
     PaymentOption,

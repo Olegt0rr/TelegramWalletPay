@@ -1,8 +1,8 @@
 from datetime import datetime
+from typing import AsyncIterator
 
 import pytest
 from aresponses import ResponsesMockServer
-
 from telegram_wallet_pay import TelegramWalletPay
 from telegram_wallet_pay.schemas import MoneyAmount, OrderPreview, OrderResult
 
@@ -25,7 +25,8 @@ SUCCESS_RESPONSE = OrderResult(
 
 
 @pytest.fixture()
-async def wallet():
+async def wallet() -> AsyncIterator[TelegramWalletPay]:
+    """Prepare TelegramWalletPay fixture."""
     wallet = TelegramWalletPay("TOKEN")
     yield wallet
     await wallet.close()
@@ -39,7 +40,8 @@ class TestCreateOrder:
         self,
         wallet: TelegramWalletPay,
         aresponses: ResponsesMockServer,
-    ):
+    ) -> None:
+        """Test successful Order creation."""
         aresponses.add(
             path_pattern=self.URI,
             method_pattern=self.METHOD,
@@ -69,7 +71,8 @@ class TestGetPreview:
         self,
         wallet: TelegramWalletPay,
         aresponses: ResponsesMockServer,
-    ):
+    ) -> None:
+        """Test successful getting Order preview."""
         aresponses.add(
             path_pattern=self.URI,
             method_pattern=self.METHOD,
@@ -85,5 +88,5 @@ class TestGetPreview:
 
 
 class TestSession:
-    async def test_close_without_session(self, wallet: TelegramWalletPay):
+    async def test_close_without_session(self, wallet: TelegramWalletPay) -> None:
         """Test session close without any request."""
