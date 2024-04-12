@@ -1,9 +1,11 @@
+import json
 from datetime import datetime
 from typing import AsyncIterator
 
 import pytest
 from aresponses import ResponsesMockServer
 from telegram_wallet_pay import TelegramWalletPay
+from telegram_wallet_pay.errors import InvalidAPIKeyError
 from telegram_wallet_pay.schemas import (
     CreateOrderResponse,
     GetOrderPreviewResponse,
@@ -121,6 +123,26 @@ class TestGetPreview:
         )
         response = await wallet.get_preview(ORDER_PREVIEW.id)
         assert response == GET_ORDER_PREVIEW_RESPONSE
+        aresponses.assert_plan_strictly_followed()
+
+    async def test_invalid_token(
+        self,
+        wallet: TelegramWalletPay,
+        aresponses: ResponsesMockServer,
+    ) -> None:
+        """Test successful getting Order preview."""
+        aresponses.add(
+            path_pattern=self.URI,
+            method_pattern=self.METHOD,
+            response=aresponses.Response(
+                text=json.dumps({"success": False, "error": "Invalid token"}),
+                content_type="application/json",
+                status=401,
+            ),
+        )
+        with pytest.raises(InvalidAPIKeyError):
+            await wallet.get_preview(ORDER_PREVIEW.id)
+
         aresponses.assert_plan_strictly_followed()
 
 
