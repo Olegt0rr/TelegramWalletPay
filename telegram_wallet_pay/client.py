@@ -35,10 +35,10 @@ from telegram_wallet_pay.schemas import (
     OrderAmountResponse,
 )
 
+T = TypeVar("T", bound=BaseModel)
+
 AUTH_HEADER = "Wpay-Store-Api-Key"
 DEFAULT_API_HOST = "https://pay.wallet.tg"
-
-T = TypeVar("T", bound=BaseModel)
 
 EXCEPTIONS_MAPPING: Dict[Union[HTTPStatus, int], Type[TelegramWalletPayError]] = {
     HTTPStatus.BAD_REQUEST: InvalidRequestError,
@@ -51,6 +51,11 @@ EXCEPTIONS_MAPPING: Dict[Union[HTTPStatus, int], Type[TelegramWalletPayError]] =
 
 class TelegramWalletPay:
     """Telegram Wallet API client."""
+
+    def __init__(self, token: str, api_host: str = DEFAULT_API_HOST) -> None:
+        self._base_url = api_host
+        self._session: Optional[ClientSession] = None
+        self._headers = {AUTH_HEADER: token}
 
     async def create_order(  # noqa: PLR0913
         self,
@@ -86,7 +91,7 @@ class TelegramWalletPay:
             method="POST",
             url="/wpay/store-api/v1/order",
             json=create_order_request.model_dump(by_alias=True),
-        ) as response:  # type: ClientResponse
+        ) as response:
             return await self._prepare_result(response, CreateOrderResponse)
 
     async def get_preview(self, order_id: str) -> GetOrderPreviewResponse:
@@ -95,7 +100,7 @@ class TelegramWalletPay:
             method="GET",
             url="/wpay/store-api/v1/order/preview",
             params={"id": order_id},
-        ) as response:  # type: ClientResponse
+        ) as response:
             return await self._prepare_result(response, GetOrderPreviewResponse)
 
     async def get_order_list(
@@ -117,7 +122,7 @@ class TelegramWalletPay:
             method="GET",
             url="/wpay/store-api/v1/reconciliation/order-list",
             params=query_params,
-        ) as response:  # type: ClientResponse
+        ) as response:
             return await self._prepare_result(
                 response,
                 GetOrderReconciliationListResponse,
@@ -131,13 +136,19 @@ class TelegramWalletPay:
         async with self._make_request(
             method="GET",
             url="/wpay/store-api/v1/reconciliation/order-amount",
-        ) as response:  # type: ClientResponse
+        ) as response:
             return await self._prepare_result(response, OrderAmountResponse)
 
-    def __init__(self, token: str, api_host: str = DEFAULT_API_HOST) -> None:
-        self._base_url = api_host
-        self._session: Optional[ClientSession] = None
-        self._headers = {AUTH_HEADER: token}
+    async def close(self) -> None:
+        """Graceful session close."""
+        if not self._session:
+            return
+
+        await self._session.close()
+
+        # Wait 250 ms for the underlying SSL connections to close
+        # https://docs.aiohttp.org/en/stable/client_advanced.html#graceful-shutdown
+        await asyncio.sleep(0.25)
 
     async def _get_session(self) -> ClientSession:
         """Get aiohttp session with cache."""
@@ -177,14 +188,3 @@ class TelegramWalletPay:
 
         exc_type = EXCEPTIONS_MAPPING.get(status, TelegramWalletPayError)
         raise exc_type(body)
-
-    async def close(self) -> None:
-        """Graceful session close."""
-        if not self._session:
-            return
-
-        await self._session.close()
-
-        # Wait 250 ms for the underlying SSL connections to close
-        # https://docs.aiohttp.org/en/stable/client_advanced.html#graceful-shutdown
-        await asyncio.sleep(0.25)
