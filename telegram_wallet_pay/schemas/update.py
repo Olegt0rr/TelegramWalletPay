@@ -1,6 +1,6 @@
 from collections.abc import Iterator
 from datetime import datetime
-from typing import Literal
+from typing import List, Literal
 
 from pydantic import Field
 
@@ -16,9 +16,8 @@ class Update(DefaultModel):
 
 
 class Updates(DefaultRootModel):
-    """Список чатов."""
 
-    root: list[Update]
+    root: List[Update]
 
     def __iter__(self) -> Iterator[Update]:
         return iter(self.root)
