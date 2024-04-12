@@ -1,6 +1,5 @@
-from collections.abc import Iterator
 from datetime import datetime
-from typing import List, Literal
+from typing import List, Literal, Iterator
 
 from pydantic import Field
 

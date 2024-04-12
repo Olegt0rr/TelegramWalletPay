@@ -1,10 +1,9 @@
 import asyncio
 import logging
 import ssl
-from collections.abc import Mapping
 from contextlib import asynccontextmanager
 from decimal import Decimal
-from typing import Literal, Optional, Union
+from typing import Literal, Optional, Union, Mapping
 
 from aiohttp import ClientResponse, ClientSession, TCPConnector
 
