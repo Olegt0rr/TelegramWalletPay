@@ -87,13 +87,7 @@ class TelegramWalletPay:
             url="/wpay/store-api/v1/order",
             json=create_order_request.model_dump(by_alias=True),
         ) as response:  # type: ClientResponse
-            body = await response.text()
-
-        return self._prepare_result(
-            schema=CreateOrderResponse,
-            status=response.status,
-            body=body,
-        )
+            return await self._prepare_result(response, CreateOrderResponse)
 
     async def get_preview(self, order_id: str) -> GetOrderPreviewResponse:
         """Retrieve the order information."""
@@ -102,13 +96,7 @@ class TelegramWalletPay:
             url="/wpay/store-api/v1/order/preview",
             params={"id": order_id},
         ) as response:  # type: ClientResponse
-            body = await response.text()
-
-        return self._prepare_result(
-            schema=GetOrderPreviewResponse,
-            status=response.status,
-            body=body,
-        )
+            return await self._prepare_result(response, GetOrderPreviewResponse)
 
     async def get_order_list(
         self,
@@ -130,13 +118,10 @@ class TelegramWalletPay:
             url="/wpay/store-api/v1/reconciliation/order-list",
             params=query_params,
         ) as response:  # type: ClientResponse
-            body = await response.text()
-
-        return self._prepare_result(
-            schema=GetOrderReconciliationListResponse,
-            status=response.status,
-            body=body,
-        )
+            return await self._prepare_result(
+                response,
+                GetOrderReconciliationListResponse,
+            )
 
     async def get_order_amount(self) -> OrderAmountResponse:
         """Get total count of all created orders in the Store.
@@ -147,13 +132,7 @@ class TelegramWalletPay:
             method="GET",
             url="/wpay/store-api/v1/reconciliation/order-amount",
         ) as response:  # type: ClientResponse
-            body = await response.text()
-
-        return self._prepare_result(
-            schema=OrderAmountResponse,
-            status=response.status,
-            body=body,
-        )
+            return await self._prepare_result(response, OrderAmountResponse)
 
     def __init__(self, token: str, api_host: str = DEFAULT_API_HOST) -> None:
         self._base_url = api_host
@@ -188,8 +167,11 @@ class TelegramWalletPay:
             yield response
 
     @staticmethod
-    def _prepare_result(*, schema: Type[T], status: int, body: str) -> T:
+    async def _prepare_result(response: ClientResponse, schema: Type[T]) -> T:
         """Process error response."""
+        status = response.status
+        body = await response.text()
+
         if status == HTTPStatus.OK:
             return schema.model_validate_json(body)
 
