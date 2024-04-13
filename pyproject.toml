@@ -41,6 +41,7 @@ classifiers = [
 dependencies = [
     "aiohttp>=3.8.5,<3.10",
     "pydantic>=2.4,<3",
+    "certifi>=2023",
 ]
 
 [project.optional-dependencies]
