@@ -1,5 +1,10 @@
 .PHONY: *
 
+install:
+	pip install -e ."[dev,test]"
+	pre-commit install
+	pre-commit autoupdate
+
 pre-commit:
 	pre-commit install
 	pre-commit autoupdate
