@@ -8,6 +8,7 @@ on:
       - ".github/workflows/tests.yml"
       - "telegram_wallet_pay/**"
       - "tests/**"
+      - "examples/**"
       - "codecov.yaml"
       - "pyproject.toml"
   pull_request:
@@ -17,6 +18,7 @@ on:
       - ".github/workflows/tests.yml"
       - "telegram_wallet_pay/**"
       - "tests/**"
+      - "examples/**"
       - "pyproject.toml"
 
 jobs:

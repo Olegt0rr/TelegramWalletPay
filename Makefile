@@ -10,3 +10,6 @@ mypy:
 ruff:
 	ruff check telegram_wallet_pay --fix
 	ruff check tests --fix
+	ruff check examples --fix
+
+lint: ruff mypy
