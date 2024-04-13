@@ -19,6 +19,7 @@ on:
       - "telegram_wallet_pay/**"
       - "tests/**"
       - "examples/**"
+      - "codecov.yaml"
       - "pyproject.toml"
 
 jobs:
@@ -36,6 +37,9 @@ jobs:
           - '3.10'
           - '3.11'
           - '3.12'
+          - 'pypy3.8'
+          - 'pypy3.9'
+          - 'pypy3.10'
 
     defaults:
       run:
@@ -55,8 +59,7 @@ jobs:
           cache-dependency-path: pyproject.toml
 
       - name: Install project dependencies
-        run: |
-          pip install -e .[test]
+        run: pip install -e .[test]
 
       - name: Run tests
         run: pytest --cov=telegram_wallet_pay --cov-report=xml
@@ -69,46 +72,3 @@ jobs:
           flags: unittests
           name: py-${{ matrix.python-version }}-${{ matrix.os }}
           fail_ci_if_error: true
-
-  pypy-tests:
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-        python-version:
-          - 'pypy3.8'
-          - 'pypy3.9'
-
-    defaults:
-      # Windows sucks. Force use bash instead of PowerShell
-      run:
-        shell: bash
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: "pip"
-          cache-dependency-path: pyproject.toml
-
-      - name: Install project dependencies
-        run: |
-          pip install -e .[dev,test,redis,proxy,i18n,fast]
-
-      - name: Setup redis
-        uses: shogo82148/actions-setup-redis@v1
-        with:
-          redis-version: 6
-
-      - name: Run tests
-        run: |
-          flags=""
-          pytest $flags
