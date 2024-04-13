@@ -15,6 +15,7 @@ from typing import (
     Union,
 )
 
+import certifi
 from aiohttp import ClientResponse, ClientSession, TCPConnector
 from pydantic import BaseModel
 
@@ -153,9 +154,8 @@ class TelegramWalletPay:
     async def _get_session(self) -> ClientSession:
         """Get aiohttp session with cache."""
         if self._session is None or self._session.closed:
-            ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-            ssl_context.load_default_certs()
-            connector = TCPConnector(ssl_context=ssl_context)
+            ssl_context = ssl.create_default_context(cafile=certifi.where())
+            connector = TCPConnector(ssl=ssl_context)
             self._session = ClientSession(
                 base_url=self._base_url,
                 connector=connector,
