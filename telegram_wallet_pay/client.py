@@ -72,7 +72,11 @@ class TelegramWalletPay:
         fail_return_url: Optional[str] = None,
         custom_data: Optional[str] = None,
     ) -> CreateOrderResponse:
-        """Create an order."""
+        """Create an order.
+
+        Docs:
+        https://docs.wallet.tg/pay/#tag/Order/operation/create
+        """
         create_order_request = CreateOrderRequest(
             amount=MoneyAmount(
                 amount=str(amount),
@@ -96,7 +100,11 @@ class TelegramWalletPay:
             return await self._prepare_result(response, CreateOrderResponse)
 
     async def get_preview(self, order_id: str) -> GetOrderPreviewResponse:
-        """Retrieve the order information."""
+        """Retrieve the order information.
+
+        Docs:
+        https://docs.wallet.tg/pay/#tag/Order/operation/getPreview
+        """
         async with self._make_request(
             method="GET",
             url="/wpay/store-api/v1/order/preview",
@@ -113,6 +121,9 @@ class TelegramWalletPay:
         """Get list of store orders.
 
         Items sorted by creation time in ascending order.
+
+        Docs:
+        https://docs.wallet.tg/pay/#tag/Order-Reconciliation/operation/getOrderList
         """
         query_params: Dict[str, Any] = {
             "offset": offset,
@@ -133,6 +144,9 @@ class TelegramWalletPay:
         """Get total count of all created orders in the Store.
 
         Including all - paid and unpaid.
+
+        Docs:
+        https://docs.wallet.tg/pay/#tag/Order-Reconciliation/operation/getOrderAmount
         """
         async with self._make_request(
             method="GET",
@@ -172,14 +186,19 @@ class TelegramWalletPay:
         params: Optional[Mapping[str, str]] = None,
         json: Optional[Mapping[str, str]] = None,
     ) -> AsyncIterator[ClientResponse]:
-        """Make request and return decoded json response."""
+        """Make request with cached session."""
         session = await self._get_session()
-        async with session.request(method, url, params=params, json=json) as response:
+        async with session.request(
+            method=method,
+            url=url,
+            params=params,
+            json=json,
+        ) as response:
             yield response
 
     @staticmethod
     async def _prepare_result(response: ClientResponse, schema: Type[T]) -> T:
-        """Process error response."""
+        """Prepare response result or raise an exception."""
         status = response.status
         body = await response.text()
 
