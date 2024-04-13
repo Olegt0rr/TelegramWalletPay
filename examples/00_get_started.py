@@ -7,7 +7,8 @@ from telegram_wallet_pay import TelegramWalletPay
 TOKEN = os.getenv("TELEGRAM_WALLET_PAY_TOKEN")
 
 
-async def main():
+async def main() -> None:
+    """Get started example."""
     wallet = TelegramWalletPay(TOKEN)
 
     response = await wallet.create_order(

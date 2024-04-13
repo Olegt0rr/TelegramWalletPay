@@ -15,8 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: chartboost/ruff-action@v1
-        with:
-          src: './telegram_wallet_pay'
 
   mypy:
     runs-on: ubuntu-latest
