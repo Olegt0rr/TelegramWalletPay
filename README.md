@@ -30,7 +30,48 @@ from uuid import uuid4
 
 from telegram_wallet_pay import TelegramWalletPay
 
-# use your token from wallet pay
+# use your token from https://pay.wallet.tg/
+TOKEN = os.getenv("TELEGRAM_WALLET_PAY_TOKEN")
+
+
+async def main() -> None:
+    """Create order."""
+    wallet = TelegramWalletPay(TOKEN)
+
+    # create your first order
+    response = await wallet.create_order(
+        amount=40,
+        currency_code="RUB",
+        description="TestPayment",
+        external_id=str(uuid4()),
+        timeout_seconds=5 * 60,
+        customer_telegram_user_id=66812456,
+    )
+
+    # let's print creation response
+    print("Response:", response)
+    print("Order:", response.data)
+
+    # don't forget close API-client instance on your app shutdown
+    await wallet.close()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+```
+
+
+### Create order
+
+```python
+import asyncio
+import os
+from uuid import uuid4
+
+from telegram_wallet_pay import TelegramWalletPay
+
+# use your token from https://pay.wallet.tg/
 TOKEN = os.getenv("TELEGRAM_WALLET_PAY_TOKEN")
 
 
@@ -52,11 +93,35 @@ async def main():
     print("Response:", response)
     print("Order:", response.data)
 
-    # also you can update order status via `get_preview` method
-    response = await wallet.get_preview(response.data.id)
-    print("Updated Order Preview:", response.data)
-
     # don't forget close API-client instance on your app shutdown
+    await wallet.close()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+```
+
+### Get order preview
+
+```python
+import asyncio
+import os
+
+from telegram_wallet_pay import TelegramWalletPay
+
+TOKEN = os.getenv("TELEGRAM_WALLET_PAY_TOKEN")
+
+
+async def main() -> None:
+    """Get order preview."""
+    wallet = TelegramWalletPay(TOKEN)
+
+    response = await wallet.get_order_preview("<your-order-id>")
+
+    print("Response:", response)
+    print("Order Preview:", response.data)
+
     await wallet.close()
 
 

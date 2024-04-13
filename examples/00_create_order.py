@@ -4,13 +4,15 @@ from uuid import uuid4
 
 from telegram_wallet_pay import TelegramWalletPay
 
+# use your token from https://pay.wallet.tg/
 TOKEN = os.getenv("TELEGRAM_WALLET_PAY_TOKEN")
 
 
 async def main() -> None:
-    """Get started example."""
+    """Create order."""
     wallet = TelegramWalletPay(TOKEN)
 
+    # create your first order
     response = await wallet.create_order(
         amount=40,
         currency_code="RUB",
@@ -20,12 +22,11 @@ async def main() -> None:
         customer_telegram_user_id=66812456,
     )
 
+    # let's print creation response
     print("Response:", response)
     print("Order:", response.data)
 
-    response = await wallet.get_preview(response.data.id)
-    print("Updated Order Preview:", response.data)
-
+    # don't forget close API-client instance on your app shutdown
     await wallet.close()
 
 

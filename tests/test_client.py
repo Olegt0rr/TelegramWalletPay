@@ -102,7 +102,7 @@ class TestCreateOrder:
         aresponses.assert_plan_strictly_followed()
 
 
-class TestGetPreview:
+class TestGetOrderPreview:
     METHOD = "GET"
     URI = "/wpay/store-api/v1/order/preview"
 
@@ -121,7 +121,7 @@ class TestGetPreview:
                 status=200,
             ),
         )
-        response = await wallet.get_preview(ORDER_PREVIEW.id)
+        response = await wallet.get_order_preview(ORDER_PREVIEW.id)
         assert response == GET_ORDER_PREVIEW_RESPONSE
         aresponses.assert_plan_strictly_followed()
 
@@ -141,8 +141,29 @@ class TestGetPreview:
             ),
         )
         with pytest.raises(InvalidAPIKeyError):
-            await wallet.get_preview(ORDER_PREVIEW.id)
+            await wallet.get_order_preview(ORDER_PREVIEW.id)
 
+        aresponses.assert_plan_strictly_followed()
+
+    async def test_deprecated(
+        self,
+        wallet: TelegramWalletPay,
+        aresponses: ResponsesMockServer,
+    ) -> None:
+        """Test getting Order preview with deprecated method."""
+        aresponses.add(
+            path_pattern=self.URI,
+            method_pattern=self.METHOD,
+            response=aresponses.Response(
+                text=GET_ORDER_PREVIEW_RESPONSE.model_dump_json(by_alias=True),
+                content_type="application/json",
+                status=200,
+            ),
+        )
+        with pytest.warns(DeprecationWarning):
+            response = await wallet.get_preview(ORDER_PREVIEW.id)
+
+        assert response == GET_ORDER_PREVIEW_RESPONSE
         aresponses.assert_plan_strictly_followed()
 
 

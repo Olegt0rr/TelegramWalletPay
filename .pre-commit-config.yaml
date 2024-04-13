@@ -13,13 +13,3 @@ repos:
       - id: ruff
         args: [ --fix ]
       - id: ruff-format
-
-  - repo: local
-    hooks:
-      - id: update-swagger
-        name: update swagger
-        entry: swagger
-        language: system
-        types: [python]
-        pass_filenames: false
-        require_serial: true

@@ -1,5 +1,6 @@
 import asyncio
 import ssl
+import warnings
 from contextlib import asynccontextmanager
 from decimal import Decimal
 from http import HTTPStatus
@@ -100,6 +101,19 @@ class TelegramWalletPay:
             return await self._prepare_result(response, CreateOrderResponse)
 
     async def get_preview(self, order_id: str) -> GetOrderPreviewResponse:
+        """Retrieve the order information.
+
+        Deprecated! Use method `.get_order_preview()` instead.
+        """
+        warnings.warn(
+            "Method `.get_preview()` is deprecated and will be removed in v1.0.0\n"
+            "Use method `.get_order_preview()` instead.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+        return await self.get_order_preview(order_id)
+
+    async def get_order_preview(self, order_id: str) -> GetOrderPreviewResponse:
         """Retrieve the order information.
 
         Docs:
