@@ -1,7 +1,7 @@
 .PHONY: *
 
 install:
-	pip install -e ."[dev,test]"
+	pip install -e ."[dev,test]" -U --upgrade-strategy=eager
 	pre-commit install
 	pre-commit autoupdate
 
