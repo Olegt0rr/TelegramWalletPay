@@ -1,6 +1,7 @@
 import hashlib
 import hmac
 from base64 import b64encode
+from typing import Union
 
 ENCODING = "utf-8"
 
@@ -23,12 +24,13 @@ def compute_signature(
     http_method: str,
     uri_path: str,
     timestamp: str,
-    body: str,
+    body: Union[str, bytes],
 ) -> str:
     """Compute signature."""
-    body_bytes = bytes(body, ENCODING)
-    body_base64 = b64encode(body_bytes).decode(ENCODING)
+    if isinstance(body, str):
+        body = bytes(body, ENCODING)
 
+    body_base64 = b64encode(body).decode(ENCODING)
     payload = f"{http_method}.{uri_path}.{timestamp}.{body_base64}"
 
     signature_bytes = hmac.new(
