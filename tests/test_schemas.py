@@ -22,7 +22,6 @@ webhook_payload = WebhookPayload(
     id=1,
     number="",
     external_id="",
-    status="PAID",
     order_amount=money_amount,
     selected_payment_option=payment_option,
     order_completed_datetime=datetime.now(),
