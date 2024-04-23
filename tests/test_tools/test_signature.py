@@ -44,3 +44,18 @@ def test_signature(body: Union[str, bytes]) -> None:
     )
 
     assert signature == "MGfJzeEprADZbihhRcGcCY5pYTI/IEJ91ejyA+XOWAs="
+
+
+def test_empty_key(body: Union[str, bytes]) -> None:
+    """Test signature provided by docs."""
+    with pytest.raises(
+        expected_exception=ValueError,
+        match="Argument 'store_api_key' should not be empty.*",
+    ):
+        compute_signature(
+            store_api_key="",
+            http_method="POST",
+            uri_path="/webhook/",
+            timestamp="168824905680291",
+            body=body,
+        )
