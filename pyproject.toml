@@ -67,6 +67,7 @@ test = [
 
 [project.urls]
 Repository = "https://github.com/Olegt0rr/TelegramWalletPay"
+Documentation = "https://docs.wallet.tg/pay/"
 
 [tool.hatch.version]
 path = "telegram_wallet_pay/__init__.py"
