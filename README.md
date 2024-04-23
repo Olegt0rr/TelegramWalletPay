@@ -2,6 +2,12 @@
 
 Python async client for [Telegram Wallet Pay API](https://pay.wallet.tg) made of `aiohttp` and `pydantic`
 
+**Also contains:**
+ - `pydantic` models for every schema, even for incoming webhooks
+ - signature validation tool, including ready-made `Depends` for `FastAPI`
+
+![bot.png](docs/img/bot.png)
+
 [![Python](https://img.shields.io/pypi/pyversions/telegram-wallet-pay.svg)](https://pypi.org/project/telegram-wallet-pay/)
 [![pypi](https://img.shields.io/pypi/v/telegram-wallet-pay?label=pypi%20package)](https://pypi.org/project/telegram-wallet-pay/)
 [![Tests](https://github.com/Olegt0rr/TelegramWalletPay/actions/workflows/tests.yml/badge.svg)](https://github.com/Olegt0rr/YaTracker/actions/workflows/tests.yml)
@@ -94,6 +100,9 @@ if __name__ == "__main__":
 
 ## Other examples
 
-Other examples you can find into [examples folder](https://github.com/Olegt0rr/TelegramWalletPay/tree/main/examples)
+* [Telegram bot example (aiogram)](https://github.com/Olegt0rr/TelegramWalletPay/blob/main/examples/02_bot_example.py)
+* [Webhook handler example (FastAPI)](https://github.com/Olegt0rr/TelegramWalletPay/blob/main/examples/03_webhook_handler_example.py)
 
-![bot.png](docs/img/bot.png)
+Also, feel free to open the
+[folder with examples](https://github.com/Olegt0rr/TelegramWalletPay/tree/main/examples),
+and if there is something missing there, describe your needs in [issue](https://github.com/Olegt0rr/TelegramWalletPay/issues/new/choose).
