@@ -6,8 +6,6 @@ Python async client for [Telegram Wallet Pay API](https://pay.wallet.tg) made of
  - `pydantic` models for every schema, even for incoming webhooks
  - signature validation tool, including ready-made `Depends` for `FastAPI`
 
-![bot.png](docs/img/bot.png)
-
 [![Python](https://img.shields.io/pypi/pyversions/telegram-wallet-pay.svg)](https://pypi.org/project/telegram-wallet-pay/)
 [![pypi](https://img.shields.io/pypi/v/telegram-wallet-pay?label=pypi%20package)](https://pypi.org/project/telegram-wallet-pay/)
 [![Tests](https://github.com/Olegt0rr/TelegramWalletPay/actions/workflows/tests.yml/badge.svg)](https://github.com/Olegt0rr/YaTracker/actions/workflows/tests.yml)
