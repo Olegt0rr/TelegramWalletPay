@@ -90,3 +90,10 @@ if __name__ == "__main__":
     asyncio.run(main())
 
 ```
+
+
+## Other examples
+
+Other examples you can find into [examples folder](https://github.com/Olegt0rr/TelegramWalletPay/tree/main/examples)
+
+![bot.png](docs/img/bot.png)
