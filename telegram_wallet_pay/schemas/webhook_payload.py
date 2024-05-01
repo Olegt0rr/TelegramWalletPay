@@ -14,5 +14,5 @@ class WebhookPayload(DefaultModel):
     external_id: str = Field(max_length=255)
     custom_data: Optional[str] = Field(None, max_length=255)
     order_amount: MoneyAmount
-    selected_payment_option: PaymentOption
+    selected_payment_option: Optional[PaymentOption] = None
     order_completed_datetime: datetime = Field(alias="orderCompletedDateTime")
