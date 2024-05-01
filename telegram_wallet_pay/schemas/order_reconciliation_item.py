@@ -3,6 +3,8 @@ from typing import Literal, Optional
 
 from pydantic import Field
 
+from telegram_wallet_pay.enums import Currency, OrderStatus
+
 from ._default import DefaultModel
 from .money_amount import MoneyAmount
 from .payment_option import PaymentOption
@@ -10,9 +12,15 @@ from .payment_option import PaymentOption
 
 class OrderReconciliationItem(DefaultModel):
     id: int
-    status: Literal["ACTIVE", "EXPIRED", "PAID", "CANCELLED"]
+    status: OrderStatus
     amount: MoneyAmount
-    auto_conversion_currency: Optional[Literal["TON", "BTC", "USDT"]] = None
+    auto_conversion_currency: Optional[
+        Literal[
+            Currency.TON,
+            Currency.BTC,
+            Currency.USDT,
+        ]
+    ] = None
     external_id: str
     customer_telegram_user_id: Optional[int] = None
     created_datetime: datetime = Field(alias="createdDateTime")

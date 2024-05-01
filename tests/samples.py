@@ -28,11 +28,29 @@ WEBHOOK_PAYLOAD = {
     "orderCompletedDateTime": "2024-04-21T15:04:24.092Z",
 }
 
-WEBHOOK_MESSAGE = {
+WEBHOOK_MESSAGE_ORDER_PAID = {
     "eventDateTime": "2024-04-21T15:04:24.092Z",
     "eventId": 10829789207553,
     "type": "ORDER_PAID",
     "payload": WEBHOOK_PAYLOAD,
 }
 
-WEBHOOK_MESSAGES = [WEBHOOK_MESSAGE]
+WEBHOOK_MESSAGE_ORDER_FAILED = {
+    "eventId": 11044361216001,
+    "eventDateTime": "2024-05-01T07:53:56.000991Z",
+    "payload": {
+        "id": 11000119772673,
+        "number": "LVDPW6K8",
+        "status": "EXPIRED",
+        "customData": "some-custom-data",
+        "externalId": "07d9539e-fd61-497e-a164-d2e354a55744",
+        "orderAmount": {
+            "amount": "0.44",
+            "currencyCode": "USD",
+        },
+        "orderCompletedDateTime": "2024-05-01T07:53:56.000980Z",
+    },
+    "type": "ORDER_FAILED",
+}
+
+WEBHOOK_MESSAGES = [WEBHOOK_MESSAGE_ORDER_PAID, WEBHOOK_MESSAGE_ORDER_FAILED]
