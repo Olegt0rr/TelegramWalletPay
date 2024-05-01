@@ -3,11 +3,6 @@
 install:
 	pip install -e ."[dev,test]" -U --upgrade-strategy=eager
 	pre-commit install
-	pre-commit autoupdate
-
-pre-commit:
-	pre-commit install
-	pre-commit autoupdate
 
 mypy:
 	mypy -p telegram_wallet_pay
