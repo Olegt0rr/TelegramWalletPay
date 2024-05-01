@@ -20,6 +20,7 @@ import certifi
 from aiohttp import ClientResponse, ClientSession, TCPConnector
 from pydantic import BaseModel
 
+from telegram_wallet_pay.enums import Currency
 from telegram_wallet_pay.errors import (
     InvalidAPIKeyError,
     InvalidRequestError,
@@ -63,12 +64,21 @@ class TelegramWalletPay:
         self,
         *,
         amount: Union[str, Decimal, float],
-        currency_code: Literal["TON", "BTC", "USDT", "EUR", "USD", "RUB"],
+        currency_code: Literal[
+            Currency.TON,
+            Currency.BTC,
+            Currency.USDT,
+            Currency.EUR,
+            Currency.USD,
+            Currency.RUB,
+        ],
         description: str,
         external_id: str,
         timeout_seconds: int,
         customer_telegram_user_id: int,
-        auto_conversion_currency: Optional[Literal["TON", "BTC", "USDT"]] = None,
+        auto_conversion_currency: Optional[
+            Literal[Currency.TON, Currency.BTC, Currency.USDT]
+        ] = None,
         return_url: Optional[str] = None,
         fail_return_url: Optional[str] = None,
         custom_data: Optional[str] = None,

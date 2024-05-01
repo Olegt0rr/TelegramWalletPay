@@ -1,7 +1,9 @@
 from datetime import datetime
-from typing import Iterator, List, Literal
+from typing import Iterator, List
 
 from pydantic import Field
+
+from telegram_wallet_pay.enums import WebhookMessageType
 
 from ._default import DefaultModel, DefaultRootModel
 from .webhook_payload import WebhookPayload
@@ -10,7 +12,7 @@ from .webhook_payload import WebhookPayload
 class WebhookMessage(DefaultModel):
     event_datetime: datetime = Field(alias="eventDateTime")
     event_id: int
-    type: Literal["ORDER_FAILED", "ORDER_PAID"]
+    type: WebhookMessageType
     payload: WebhookPayload
 
 

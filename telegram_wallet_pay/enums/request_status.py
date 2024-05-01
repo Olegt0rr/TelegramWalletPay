@@ -1,0 +1,10 @@
+from enum import Enum
+
+
+class RequestStatus(str, Enum):
+    SUCCESS = "SUCCESS"
+    ALREADY = "ALREADY"
+    CONFLICT = "CONFLICT"
+    ACCESS_DENIED = "ACCESS_DENIED"
+    INVALID_REQUEST = "INVALID_REQUEST"
+    INTERNAL_ERROR = "INTERNAL_ERROR"
