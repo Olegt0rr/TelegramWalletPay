@@ -35,6 +35,7 @@ WEBHOOK_MESSAGE_ORDER_PAID = {
     "payload": WEBHOOK_PAYLOAD,
 }
 
+# noinspection SpellCheckingInspection
 WEBHOOK_MESSAGE_ORDER_FAILED = {
     "eventId": 11044361216001,
     "eventDateTime": "2024-05-01T07:53:56.000991Z",

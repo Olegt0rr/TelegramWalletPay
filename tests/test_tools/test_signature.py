@@ -4,6 +4,7 @@ import pytest
 from telegram_wallet_pay.tools import compute_signature
 
 
+# noinspection SpellCheckingInspection
 @pytest.mark.parametrize(
     "body",
     [
