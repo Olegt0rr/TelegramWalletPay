@@ -11,7 +11,12 @@ from .money_amount import MoneyAmount
 
 class OrderPreview(DefaultModel):
     id: str
-    status: OrderStatus
+    status: Literal[
+        OrderStatus.ACTIVE,
+        OrderStatus.EXPIRED,
+        OrderStatus.PAID,
+        OrderStatus.CANCELLED,
+    ]
     number: str
     amount: MoneyAmount
     auto_conversion_currency: Optional[

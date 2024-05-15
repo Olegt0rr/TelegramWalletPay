@@ -12,7 +12,12 @@ from .payment_option import PaymentOption
 
 class OrderReconciliationItem(DefaultModel):
     id: int
-    status: OrderStatus
+    status: Literal[
+        OrderStatus.ACTIVE,
+        OrderStatus.EXPIRED,
+        OrderStatus.PAID,
+        OrderStatus.CANCELLED,
+    ]
     amount: MoneyAmount
     auto_conversion_currency: Optional[
         Literal[
