@@ -6,7 +6,7 @@ The project is still young, so absolutely all released ones are supported in ter
 
 ## Reporting a Vulnerability
 
-If you find a vulnerability, please report it to the author of the project (contact information can be found in the profile). 
+If you find a vulnerability, please report it to the author of the project (contact information can be found in the profile).
 
 ## Bug bounty program
 
