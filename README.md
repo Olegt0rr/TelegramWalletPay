@@ -13,7 +13,7 @@ Python async client for [Telegram Wallet Pay API](https://pay.wallet.tg) made of
 
 [![Code linter: ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v1.json)](https://github.com/charliermarsh/ruff)
 [![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org)
-[![Gitmoji](https://img.shields.io/badge/gitmoji-%20😎-FFDD67.svg?style=flat-square)](https://gitmoji.dev)
+[![Gitmoji](https://img.shields.io/badge/gitmoji-%20😎-FFDD67.svg)](https://gitmoji.dev)
 ---
 
 ## Get started
