@@ -1,5 +1,5 @@
 ORDER_AMOUNT = {
-    "currencyCode": "RUB",
+    "currencyCode": "EUR",
     "amount": "40.00",
 }
 

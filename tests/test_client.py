@@ -22,7 +22,7 @@ ORDER_PREVIEW = OrderPreview(
     id="",
     status="ACTIVE",
     number="",
-    amount=MoneyAmount(currency_code="RUB", amount="42.0"),
+    amount=MoneyAmount(currency_code="EUR", amount="42.0"),
     created_datetime=datetime.now(),
     expiration_datetime=datetime.now(),
     pay_link="",
@@ -44,7 +44,7 @@ GET_ORDER_PREVIEW_RESPONSE = GetOrderPreviewResponse(
 ORDER_RECONCILIATION_ITEM = OrderReconciliationItem(
     id=42,
     status="EXPIRED",
-    amount=MoneyAmount(currency_code="RUB", amount="42.0"),
+    amount=MoneyAmount(currency_code="EUR", amount="42.0"),
     external_id="",
     created_datetime=datetime.now(),
     expiration_datetime=datetime.now(),

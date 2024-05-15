@@ -15,7 +15,7 @@ async def main() -> None:
     # create your first order
     response = await wallet.create_order(
         amount=40,
-        currency_code="RUB",
+        currency_code="EUR",
         description="TestPayment",
         external_id=str(uuid4()),
         timeout_seconds=5 * 60,

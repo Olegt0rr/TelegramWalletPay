@@ -11,7 +11,7 @@ from telegram_wallet_pay.schemas import (
     WebhookPayload,
 )
 
-money_amount = MoneyAmount(currency_code="RUB", amount="42")
+money_amount = MoneyAmount(currency_code="EUR", amount="42")
 payment_option = PaymentOption(
     amount=money_amount,
     amount_fee=money_amount,
