@@ -58,6 +58,7 @@ dev = [
     "fastapi-slim>=0.111,<1",
     "uvicorn>=0.29,<1",
     "httpx>=0.27,<1",
+    "aiogram>=3.6,<4"
 ]
 test = [
     "coverage>=7,<8",
