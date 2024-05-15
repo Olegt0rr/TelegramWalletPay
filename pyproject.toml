@@ -195,5 +195,5 @@ max-complexity = 10
 runtime-evaluated-base-classes = ["pydantic.BaseModel", "telegram_wallet_pay.schemas._default.DefaultModel"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101", "INP001", "D"]
+"tests/*" = ["D", "FBT001", "INP001", "S101", "SLF001"]
 "examples/*" = ["INP001", "T201"]
