@@ -14,6 +14,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 # install Telegram Wallet Pay API client library:
 #   pip install telegram-wallet-pay
 from telegram_wallet_pay import TelegramWalletPay
+from telegram_wallet_pay.enums import ButtonName
 
 # store TELEGRAM_BOT_API_TOKEN to your .env
 # bot token can be issued via https://t.me/BotFather
@@ -48,7 +49,7 @@ async def message_handler(message: Message, wallet: TelegramWalletPay) -> None:
     # prepare keyboard
     keyboard = InlineKeyboardBuilder()
     wallet_button = InlineKeyboardButton(
-        text="👛 Pay via Wallet",
+        text=ButtonName.PAY_VIA_WALLET,
         url=order.pay_link,
     )
     keyboard.add(wallet_button)
