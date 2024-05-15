@@ -7,7 +7,6 @@ __all__ = [
     "errors",
     "schemas",
     "tools",
-    "WALLET_EMOJI",
 ]
 
 from . import constants, enums, errors, schemas, tools
