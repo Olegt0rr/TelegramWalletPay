@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Iterator, List
+from typing import Iterator, List, Literal
 
 from pydantic import Field
 
@@ -12,7 +12,10 @@ from .webhook_payload import WebhookPayload
 class WebhookMessage(DefaultModel):
     event_datetime: datetime = Field(alias="eventDateTime")
     event_id: int
-    type: WebhookMessageType
+    type: Literal[
+        WebhookMessageType.ORDER_PAID,
+        WebhookMessageType.ORDER_FAILED,
+    ]
     payload: WebhookPayload
 
 
