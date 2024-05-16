@@ -22,6 +22,7 @@ class OrderReconciliationItem(DefaultModel):
     auto_conversion_currency: Optional[
         Literal[
             Currency.TON,
+            Currency.NOT,
             Currency.BTC,
             Currency.USDT,
         ]

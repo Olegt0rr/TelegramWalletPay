@@ -66,6 +66,7 @@ class TelegramWalletPay:
         amount: Union[str, Decimal, float],
         currency_code: Literal[
             Currency.TON,
+            Currency.NOT,
             Currency.BTC,
             Currency.USDT,
             Currency.EUR,
@@ -77,7 +78,12 @@ class TelegramWalletPay:
         timeout_seconds: int,
         customer_telegram_user_id: int,
         auto_conversion_currency: Optional[
-            Literal[Currency.TON, Currency.BTC, Currency.USDT]
+            Literal[
+                Currency.TON,
+                Currency.NOT,
+                Currency.BTC,
+                Currency.USDT,
+            ]
         ] = None,
         return_url: Optional[str] = None,
         fail_return_url: Optional[str] = None,
