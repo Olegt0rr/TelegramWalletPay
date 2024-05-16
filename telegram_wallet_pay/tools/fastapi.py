@@ -3,7 +3,7 @@ from typing import Optional
 
 from fastapi import Depends, HTTPException, Request
 
-from telegram_wallet_pay.tools import compute_signature
+from .signature import compute_signature
 
 
 def get_timestamp(request: Request) -> str:
@@ -20,7 +20,7 @@ def get_timestamp(request: Request) -> str:
         raise HTTPException(
             status_code=400,
             detail="Timestamp header is empty",
-        ) from None
+        )
 
     return timestamp
 
@@ -39,7 +39,7 @@ def get_signature(request: Request) -> str:
         raise HTTPException(
             status_code=400,
             detail="Signature header is empty",
-        ) from None
+        )
 
     return signature
 
