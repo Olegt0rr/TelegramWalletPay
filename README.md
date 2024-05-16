@@ -108,9 +108,9 @@ if __name__ == "__main__":
 
 ## Other examples
 
-* [Telegram bot example (aiogram)](./examples/02_telegram_bot.py)
-* [Webhook handler example (FastAPI)](./examples/03_webhook_handler_fastapi.py)
-* [Webhook handler example (aiohttp)](./examples/04_webhook_handler_aiohttp.py)
+* [Telegram bot example (aiogram)](https://github.com/Olegt0rr/TelegramWalletPay/blob/main/examples/02_telegram_bot.py)
+* [Webhook handler example (FastAPI)](https://github.com/Olegt0rr/TelegramWalletPay/blob/main/examples/03_webhook_handler_fastapi.py)
+* [Webhook handler example (aiohttp)](https://github.com/Olegt0rr/TelegramWalletPay/blob/main/examples/04_webhook_handler_aiohttp.py)
 
 Also, feel free to open the
 [folder with examples](https://github.com/Olegt0rr/TelegramWalletPay/tree/main/examples),
