@@ -6,6 +6,8 @@ from fastapi import Depends, FastAPI
 from telegram_wallet_pay.schemas import WebhookMessages
 from telegram_wallet_pay.tools.fastapi import CheckSignature
 
+# store TELEGRAM_WALLET_PAY_TOKEN to your .env
+# wallet token can be issued via https://pay.wallet.tg/
 TELEGRAM_WALLET_PAY_TOKEN = os.getenv("TELEGRAM_WALLET_PAY_TOKEN")
 
 app = FastAPI()

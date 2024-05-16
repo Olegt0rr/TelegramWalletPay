@@ -4,12 +4,14 @@ from uuid import uuid4
 
 from telegram_wallet_pay import TelegramWalletPay
 
-# use your token from https://pay.wallet.tg/
+# store TELEGRAM_WALLET_PAY_TOKEN to your .env
+# wallet token can be issued via https://pay.wallet.tg/
 TOKEN = os.getenv("TELEGRAM_WALLET_PAY_TOKEN")
 
 
 async def main() -> None:
     """Create order."""
+    # create wallet client instance
     wallet = TelegramWalletPay(TOKEN)
 
     # create your first order
