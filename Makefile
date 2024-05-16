@@ -6,6 +6,7 @@ install:
 
 mypy:
 	mypy -p telegram_wallet_pay
+	mypy -p tests
 
 ruff:
 	ruff check telegram_wallet_pay --fix
