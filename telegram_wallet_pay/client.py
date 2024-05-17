@@ -56,6 +56,10 @@ class TelegramWalletPay:
     """Telegram Wallet API client."""
 
     def __init__(self, token: str, api_host: str = DEFAULT_API_HOST) -> None:
+        if not token or not isinstance(token, str):
+            msg = f"String token should be provided. You passed: {token}"
+            raise RuntimeError(msg)
+
         self._base_url = api_host
         self._session: Optional[ClientSession] = None
         self._headers = {AUTH_HEADER: token}
