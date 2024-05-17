@@ -8,6 +8,7 @@ from ._default import DefaultModel
 class MoneyAmount(DefaultModel):
     currency_code: Literal[
         Currency.TON,
+        Currency.NOT,
         Currency.BTC,
         Currency.USDT,
         Currency.EUR,
