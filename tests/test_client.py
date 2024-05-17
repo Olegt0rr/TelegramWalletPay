@@ -222,7 +222,7 @@ class TestSession:
 
 @pytest.mark.parametrize("token", [None, bool, 42])
 def test_client_init_without_token(token: Any) -> None:
-    """Check passed token is not"""
+    """Check passed token is string and not empty."""
     msg = f"String token should be provided. You passed: {token!r}"
     with pytest.raises(RuntimeError, match=msg):
         # noinspection PyTypeChecker
