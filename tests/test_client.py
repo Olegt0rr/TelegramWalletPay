@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from typing import AsyncIterator
+from typing import Any, AsyncIterator
 
 import pytest
 from aresponses import ResponsesMockServer
@@ -218,3 +218,12 @@ class TestGetOrderAmount:
 class TestSession:
     async def test_close_without_session(self, wallet: TelegramWalletPay) -> None:
         """Test session close without any request."""
+
+
+@pytest.mark.parametrize("token", [None, bool, 42])
+def test_client_init_without_token(token: Any) -> None:
+    """Check passed token is not"""
+    msg = f"String token should be provided. You passed: {token!r}"
+    with pytest.raises(RuntimeError, match=msg):
+        # noinspection PyTypeChecker
+        TelegramWalletPay(token)
