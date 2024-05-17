@@ -10,7 +10,7 @@ def compute_signature(
     store_api_key: str,
     http_method: str,
     uri_path: str,
-    timestamp: str,
+    timestamp: Union[str, float],
     body: Union[str, bytes],
 ) -> str:
     """Compute signature."""
