@@ -10,7 +10,7 @@ from telegram_wallet_pay.tools.fastapi import CheckSignature
 logger = logging.getLogger(__name__)
 
 
-@pytest.fixture()
+@pytest.fixture
 def app(token: str, path: str) -> FastAPI:
     """Prepare FastAPI application."""
     application = FastAPI()
@@ -24,7 +24,7 @@ def app(token: str, path: str) -> FastAPI:
     return application
 
 
-@pytest.fixture()
+@pytest.fixture
 def client(app: FastAPI) -> TestClient:
     """Prepare test client."""
     return TestClient(app)

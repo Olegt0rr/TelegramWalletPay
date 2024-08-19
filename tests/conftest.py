@@ -8,31 +8,31 @@ from telegram_wallet_pay.tools import compute_signature
 from tests.samples import WEBHOOK_MESSAGES
 
 
-@pytest.fixture()
+@pytest.fixture
 def token() -> str:
     """Prepare token."""
     return str(uuid4())
 
 
-@pytest.fixture()
+@pytest.fixture
 def path() -> str:
     """Prepare path."""
     return "/wallet"
 
 
-@pytest.fixture()
+@pytest.fixture
 def body() -> str:
     """Prepare body."""
     return json.dumps(WEBHOOK_MESSAGES)
 
 
-@pytest.fixture()
+@pytest.fixture
 def timestamp() -> str:
     """Prepare timestamp."""
     return str(datetime.now().timestamp())
 
 
-@pytest.fixture()
+@pytest.fixture
 def signature(timestamp: str, body: str, token: str, path: str) -> str:
     """Prepare signature."""
     return compute_signature(

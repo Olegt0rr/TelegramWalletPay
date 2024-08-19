@@ -63,7 +63,7 @@ ORDER_AMOUNT_RESPONSE = OrderAmountResponse(
 )
 
 
-@pytest.fixture()
+@pytest.fixture
 async def wallet() -> AsyncIterator[TelegramWalletPay]:
     """Prepare TelegramWalletPay fixture."""
     wallet = TelegramWalletPay("TOKEN")
