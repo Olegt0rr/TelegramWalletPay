@@ -14,7 +14,7 @@ BAD_REQUEST = 400
 logger = logging.getLogger(__name__)
 
 
-@pytest.fixture()
+@pytest.fixture
 async def app(path: str, handler: Callable) -> web.Application:
     app = web.Application()
     app.router.add_route("POST", path, handler)
@@ -22,14 +22,14 @@ async def app(path: str, handler: Callable) -> web.Application:
     await app.cleanup()
 
 
-@pytest.fixture()
+@pytest.fixture
 async def client(app: web.Application, aiohttp_client: ClientFixture) -> TestClient:
     client = await aiohttp_client(app)
     yield client
     await client.close()
 
 
-@pytest.fixture()
+@pytest.fixture
 async def handler(token: str) -> Callable:
     @check_signature(token)
     async def handler(request: web.Request) -> web.StreamResponse:
