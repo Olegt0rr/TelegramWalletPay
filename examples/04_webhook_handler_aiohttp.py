@@ -25,5 +25,5 @@ async def webhook_handler(request: web.Request) -> web.StreamResponse:
 
 if __name__ == "__main__":
     app = web.Application()
-    routes = web.RouteTableDef()
+    app.router.add_post("/wallet", webhook_handler)
     web.run_app(app)
