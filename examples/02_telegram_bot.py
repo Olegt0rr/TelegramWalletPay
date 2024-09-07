@@ -41,7 +41,7 @@ async def message_handler(message: Message, wallet: TelegramWalletPay) -> None:
         currency_code="USD",
         description="Example payment description",
         external_id=str(uuid4()),
-        timeout_seconds=5 * 60,
+        timeout_seconds=24 * 60 * 60,  # 1 day
         customer_telegram_user_id=message.from_user.id,
     )
     order = wallet_response.data
