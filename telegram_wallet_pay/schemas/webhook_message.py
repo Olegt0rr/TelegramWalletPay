@@ -1,5 +1,6 @@
+from collections.abc import Iterator
 from datetime import datetime
-from typing import Iterator, List, Literal
+from typing import Literal
 
 from pydantic import Field
 
@@ -20,7 +21,7 @@ class WebhookMessage(DefaultModel):
 
 
 class WebhookMessages(DefaultRootModel):
-    root: List[WebhookMessage]
+    root: list[WebhookMessage]
 
     def __iter__(self) -> Iterator[WebhookMessage]:  # type: ignore[override]
         """Iterate over root model."""

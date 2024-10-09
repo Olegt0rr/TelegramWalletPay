@@ -1,5 +1,5 @@
 from ipaddress import IPv4Address, IPv4Network
-from typing import Set, Union
+from typing import Union
 
 import pytest
 from telegram_wallet_pay.tools.ip_filter import DEFAULT_WALLET_WEBHOOK_IPS, IPFilter
@@ -45,7 +45,7 @@ def test_check_ip(ip: Union[str, IPv4Address], result: bool) -> None:
         (IPv4Network("91.108.4.0/22"), set(IPv4Network("91.108.4.0/22").hosts())),
     ],
 )
-def test_allow_ip(ip: str, ip_range: Set[IPv4Address]) -> None:
+def test_allow_ip(ip: str, ip_range: set[IPv4Address]) -> None:
     ip_filter = IPFilter([])
     ip_filter.allow_ip(ip)
     assert ip_filter._allowed_ips == ip_range

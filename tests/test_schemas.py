@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any
 
 import pytest
 from pydantic import BaseModel, RootModel
@@ -40,7 +40,7 @@ webhook_message = WebhookMessage(
         (WebhookMessages, [webhook_message.model_dump(by_alias=True)]),
     ],
 )
-def test_iteration(schema: RootModel, data: List[Dict[str, Any]]) -> None:
+def test_iteration(schema: RootModel, data: list[dict[str, Any]]) -> None:
     """Test object is iterable."""
     iterable_object = schema.model_validate(data)
     for child in iterable_object:

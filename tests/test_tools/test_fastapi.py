@@ -1,5 +1,4 @@
 import logging
-from typing import Dict
 
 import pytest
 from fastapi import Depends, FastAPI, status
@@ -17,7 +16,7 @@ def app(token: str, path: str) -> FastAPI:
     check_signature = CheckSignature(token)
 
     @application.post(path, dependencies=[Depends(check_signature)])
-    async def webhook_handler(webhook_messages: WebhookMessages) -> Dict[str, bool]:
+    async def webhook_handler(webhook_messages: WebhookMessages) -> dict[str, bool]:
         logger.info("Get webhook_messages: %s", webhook_messages)
         return {"success": True}
 

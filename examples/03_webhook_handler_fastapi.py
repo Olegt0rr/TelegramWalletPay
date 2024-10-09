@@ -1,5 +1,4 @@
 import os
-from typing import Dict
 
 import uvicorn
 from fastapi import Depends, FastAPI
@@ -15,7 +14,7 @@ check_signature = CheckSignature(TELEGRAM_WALLET_PAY_TOKEN)
 
 
 @app.post("/wallet", dependencies=[Depends(check_signature)])
-async def webhook_handler(webhook_messages: WebhookMessages) -> Dict[str, bool]:
+async def webhook_handler(webhook_messages: WebhookMessages) -> dict[str, bool]:
     """Handle webhook from Telegram Wallet API."""
     for webhook_message in webhook_messages:
         # process every webhook message as you wish

@@ -1,7 +1,8 @@
 import json
+from collections.abc import Awaitable
 from functools import wraps
 from secrets import compare_digest
-from typing import Awaitable, Callable, Optional, TypeVar
+from typing import Callable, Optional, TypeVar
 
 from aiohttp import web
 

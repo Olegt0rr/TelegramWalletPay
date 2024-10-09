@@ -7,7 +7,7 @@ name = "telegram-wallet-pay"
 dynamic = ["version"]
 description = "Async client for Telegram Wallet Pay API"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license = "MIT"
 authors = [
     { name = "Oleg Abramov", email = "oleg@trueweb.app" },
@@ -33,11 +33,11 @@ classifiers = [
     "Operating System :: POSIX :: Linux",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
@@ -99,14 +99,14 @@ lint = [
 ]
 
 [tool.hatch.envs.dev]
-python = "3.8"
+python = "3.9"
 features = [
     "dev",
     "test",
 ]
 
 [[tool.hatch.envs.test.matrix]]
-python = ["3.8", "3.9", "310", "311", "312"]
+python = ["3.9", "310", "311", "312", "313"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
@@ -178,7 +178,7 @@ exclude = [
 line-length = 88
 
 # Assume minimal Python version
-target-version = "py38"
+target-version = "py39"
 
 [tool.ruff.lint]
 select = ["ALL"]
