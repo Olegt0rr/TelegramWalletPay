@@ -1,17 +1,14 @@
 import asyncio
 import ssl
 import warnings
+from collections.abc import AsyncIterator, Mapping
 from contextlib import asynccontextmanager
 from decimal import Decimal
 from http import HTTPStatus
 from typing import (
     Any,
-    AsyncIterator,
-    Dict,
     Literal,
-    Mapping,
     Optional,
-    Type,
     TypeVar,
     Union,
 )
@@ -43,7 +40,7 @@ T = TypeVar("T", bound=BaseModel)
 AUTH_HEADER = "Wpay-Store-Api-Key"
 DEFAULT_API_HOST = "https://pay.wallet.tg"
 
-EXCEPTIONS_MAPPING: Dict[Union[HTTPStatus, int], Type[TelegramWalletPayError]] = {
+EXCEPTIONS_MAPPING: dict[Union[HTTPStatus, int], type[TelegramWalletPayError]] = {
     HTTPStatus.BAD_REQUEST: InvalidRequestError,
     HTTPStatus.UNAUTHORIZED: InvalidAPIKeyError,
     HTTPStatus.NOT_FOUND: NotFountError,
@@ -159,7 +156,7 @@ class TelegramWalletPay:
         Docs:
         https://docs.wallet.tg/pay/#tag/Order-Reconciliation/operation/getOrderList
         """
-        query_params: Dict[str, Any] = {
+        query_params: dict[str, Any] = {
             "offset": offset,
             "count": count,
         }
@@ -231,7 +228,7 @@ class TelegramWalletPay:
             yield response
 
     @staticmethod
-    async def _prepare_result(response: ClientResponse, schema: Type[T]) -> T:
+    async def _prepare_result(response: ClientResponse, schema: type[T]) -> T:
         """Prepare response result or raise an exception."""
         status = response.status
         body = await response.text()

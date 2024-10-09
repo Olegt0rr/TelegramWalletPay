@@ -7,8 +7,9 @@ Docs:
 https://docs.wallet.tg/pay/#operation/completedOrder
 """
 
+from collections.abc import Sequence
 from ipaddress import IPv4Address, IPv4Network
-from typing import Any, List, Sequence, Set, Union
+from typing import Any, Union
 
 DEFAULT_WALLET_WEBHOOK_IPS = (
     IPv4Address("172.255.248.29"),
@@ -25,7 +26,7 @@ class IPFilter:
             Union[str, IPv4Network, IPv4Address]
         ] = DEFAULT_WALLET_WEBHOOK_IPS,
     ) -> None:
-        self._allowed_ips: Set[IPv4Address] = set()
+        self._allowed_ips: set[IPv4Address] = set()
 
         if ips:
             self.allow_ip(*ips)
@@ -47,7 +48,7 @@ class IPFilter:
         return self.check(item)
 
     @staticmethod
-    def _convert_ips(ip: Any) -> List[IPv4Address]:  # noqa: ANN401
+    def _convert_ips(ip: Any) -> list[IPv4Address]:  # noqa: ANN401
         """Convert passed data to IP list."""
         if isinstance(ip, str):
             ip = IPv4Network(ip) if "/" in ip else IPv4Address(ip)

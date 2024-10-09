@@ -1,6 +1,7 @@
 import json
+from collections.abc import AsyncIterator
 from datetime import datetime
-from typing import Any, AsyncIterator
+from typing import Any
 
 import pytest
 from aresponses import ResponsesMockServer
