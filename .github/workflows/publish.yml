@@ -37,7 +37,7 @@ jobs:
           venv/bin/python -c "import telegram_wallet_pay; print(telegram_wallet_pay.__version__)"
 
       - name: Publish artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist/*
@@ -53,7 +53,7 @@ jobs:
       id-token: write
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v4.1.7
+        uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
