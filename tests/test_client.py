@@ -161,7 +161,10 @@ class TestGetOrderPreview:
                 status=200,
             ),
         )
-        with pytest.warns(DeprecationWarning):
+        with pytest.warns(
+            DeprecationWarning,
+            match="Method `.get_preview()` is deprecated",
+        ):
             response = await wallet.get_preview(ORDER_PREVIEW.id)
 
         assert response == GET_ORDER_PREVIEW_RESPONSE
