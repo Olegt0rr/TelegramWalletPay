@@ -182,7 +182,7 @@ target-version = "py39"
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["A003", "ANN002", "ANN003", "ANN101", "ANN102", "D100", "D101", "D106", "D107", "D104", "D203", "D213", "DTZ005", "FA100", "RUF001", "RUF002", "RUF003", "S101", "TCH001", "TCH002", "PT015", "PT017", "B011"]
+ignore = ["A003", "ANN002", "ANN003", "D100", "D101", "D106", "D107", "D104", "D203", "D213", "DTZ005", "FA100", "RUF001", "RUF002", "RUF003", "S101", "TC001", "TC002", "PT015", "PT017", "B011"]
 fixable = ["ALL"]
 unfixable = []
 
