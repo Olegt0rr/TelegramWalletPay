@@ -1,132 +1,197 @@
 [build-system]
-requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+requires = [ "hatchling" ]
 
 [project]
 name = "telegram-wallet-pay"
-dynamic = ["version"]
 description = "Async client for Telegram Wallet Pay API"
 readme = "README.md"
-requires-python = ">=3.9"
-license = "MIT"
-authors = [
-    { name = "Oleg Abramov", email = "oleg@trueweb.app" },
-]
-maintainers = [
-    { name = "Oleg Abramov", email = "oleg@trueweb.app" },
-]
 keywords = [
-    "Telegram",
-    "Wallet",
-    "Pay",
-    "API",
-    "async",
+  "API",
+  "async",
+  "Pay",
+  "Telegram",
+  "Wallet",
 ]
+license = "MIT"
+maintainers = [
+  { name = "Oleg Abramov", email = "oleg@trueweb.app" },
+]
+authors = [
+  { name = "Oleg Abramov", email = "oleg@trueweb.app" },
+]
+requires-python = ">=3.9"
 classifiers = [
-    "Development Status :: 4 - Beta",
-    "Framework :: AsyncIO",
-    "Framework :: Pydantic",
-    "Intended Audience :: Customer Service",
-    "Intended Audience :: Financial and Insurance Industry",
-    "Operating System :: MacOS",
-    "Operating System :: Microsoft :: Windows",
-    "Operating System :: POSIX :: Linux",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: Implementation :: CPython",
-    "Programming Language :: Python :: Implementation :: PyPy",
-    "Topic :: Software Development :: Libraries :: Application Frameworks",
-    "Typing :: Typed",
+  "Development Status :: 4 - Beta",
+  "Framework :: AsyncIO",
+  "Framework :: Pydantic",
+  "Intended Audience :: Customer Service",
+  "Intended Audience :: Financial and Insurance Industry",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Topic :: Software Development :: Libraries :: Application Frameworks",
+  "Typing :: Typed",
 ]
 
+dynamic = [ "version" ]
 dependencies = [
-    "aiohttp>=3.8,<4",
-    "pydantic>=2.4,<3",
-    "certifi>=2023",
+  "aiohttp>=3.8,<4",
+  "certifi>=2023",
+  "pydantic>=2.4,<3",
 ]
 
-[project.optional-dependencies]
-dev = [
-    "ruff>=0,<1",
-    "mypy>=1,<2",
-    "pre-commit>=3,<5",
-    "fastapi-slim>=0.111,<1",
-    "uvicorn>=0.29,<1",
-    "httpx>=0.27,<1",
-    "aiogram>=3.6,<4"
+optional-dependencies.dev = [
+  "aiogram>=3.6,<4",
+  "fastapi-slim>=0.111,<1",
+  "httpx>=0.27,<1",
+  "mypy>=1,<2",
+  "pre-commit>=3,<5",
+  "ruff>=0,<1",
+  "uvicorn>=0.29,<1",
 ]
-test = [
-    "coverage>=7,<8",
-    "pytest>=8,<9",
-    "pytest-asyncio>=0,<2",
-    "pytest-aiohttp>=1.0,<2",
-    "pytest-cov>=5,<7",
-    "aresponses>=3,<4",
-    "fastapi-slim>=0.111,<1",
-    "httpx>=0.27,<1",
+optional-dependencies.test = [
+  "aresponses>=3,<4",
+  "coverage>=7,<8",
+  "fastapi-slim>=0.111,<1",
+  "httpx>=0.27,<1",
+  "pytest>=8,<9",
+  "pytest-aiohttp>=1,<2",
+  "pytest-asyncio>=0,<2",
+  "pytest-cov>=5,<7",
 ]
-
-
-[project.urls]
-Repository = "https://github.com/Olegt0rr/TelegramWalletPay"
-Documentation = "https://docs.wallet.tg/pay/"
+urls.Documentation = "https://docs.wallet.tg/pay/"
+urls.Repository = "https://github.com/Olegt0rr/TelegramWalletPay"
 
 [tool.hatch.version]
 path = "telegram_wallet_pay/__init__.py"
 
 [tool.hatch.build.targets.sdist]
 exclude = [
-    "/.github",
+  "/.github",
 ]
 
 [tool.hatch.envs.default]
 features = [
-    "dev",
-    "test",
+  "dev",
+  "test",
 ]
 post-install-commands = [
-    "pre-commit install",
+  "pre-commit install",
 ]
 
 [tool.hatch.envs.default.scripts]
 lint = [
-    "ruff check telegram_wallet_pay --fix",
+  "ruff check telegram_wallet_pay --fix",
 ]
 
 [tool.hatch.envs.dev]
 python = "3.9"
 features = [
-    "dev",
-    "test",
+  "dev",
+  "test",
 ]
 
 [[tool.hatch.envs.test.matrix]]
-python = ["3.9", "310", "311", "312", "313"]
+python = [ "3.9", "310", "311", "312", "313" ]
+
+[tool.ruff]
+# Assume minimal Python version
+target-version = "py39"
+
+# Same as Black.
+line-length = 88
+
+src = [ "app", "tests", "tools" ]
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".hg",
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "venv",
+]
+
+lint.select = [ "ALL" ]
+lint.ignore = [
+  "A003",
+  "ANN002",
+  "ANN003",
+  "B011",
+  "D100",
+  "D101",
+  "D104",
+  "D106",
+  "D107",
+  "D203",
+  "D213",
+  "DTZ005",
+  "FA100",
+  "PT015",
+  "PT017",
+  "RUF001",
+  "RUF002",
+  "RUF003",
+  "S101",
+  "TC001",
+  "TC002",
+]
+lint.per-file-ignores."examples/*" = [ "INP001", "T201" ]
+lint.per-file-ignores."tests/*" = [ "ANN401", "D", "FBT001", "INP001", "S101", "SLF001" ]
+lint.fixable = [ "ALL" ]
+lint.unfixable = [  ]
+# Allow unused variables when underscore-prefixed.
+lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+lint.flake8-type-checking.runtime-evaluated-base-classes = [
+  "pydantic.BaseModel",
+  "telegram_wallet_pay.schemas._default.DefaultModel",
+]
+lint.mccabe.max-complexity = 10
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = [
-    "tests",
+  "tests",
 ]
 filterwarnings = [
-    "error",
-    "ignore::pytest.PytestUnraisableExceptionWarning",
+  "error",
+  "ignore::pytest.PytestUnraisableExceptionWarning",
 ]
 
 [tool.coverage.report]
 exclude_lines = [
-    "if __name__ == .__main__.:",
-    "pragma: no cover",
-    "if TYPE_CHECKING:",
-    "@abstractmethod",
-    "@overload",
+  "if __name__ == .__main__.:",
+  "pragma: no cover",
+  "if TYPE_CHECKING:",
+  "@abstractmethod",
+  "@overload",
 ]
-
 
 [tool.mypy]
 warn_redundant_casts = true
@@ -146,55 +211,3 @@ ignore_errors = true
 [[tool.mypy.overrides]]
 module = "examples.*"
 ignore_errors = true
-
-
-[tool.ruff]
-src = ["app", "tools", "tests"]
-
-# Exclude a variety of commonly ignored directories.
-exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".hg",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "venv",
-]
-
-# Same as Black.
-line-length = 88
-
-# Assume minimal Python version
-target-version = "py39"
-
-[tool.ruff.lint]
-select = ["ALL"]
-ignore = ["A003", "ANN002", "ANN003", "D100", "D101", "D106", "D107", "D104", "D203", "D213", "DTZ005", "FA100", "RUF001", "RUF002", "RUF003", "S101", "TC001", "TC002", "PT015", "PT017", "B011"]
-fixable = ["ALL"]
-unfixable = []
-
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
-[tool.ruff.lint.mccabe]
-max-complexity = 10
-
-[tool.ruff.lint.flake8-type-checking]
-runtime-evaluated-base-classes = ["pydantic.BaseModel", "telegram_wallet_pay.schemas._default.DefaultModel"]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/*" = ["ANN401", "D", "FBT001", "INP001", "S101", "SLF001"]
-"examples/*" = ["INP001", "T201"]

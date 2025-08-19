@@ -14,3 +14,6 @@ ruff:
 	ruff check examples --fix
 
 lint: ruff mypy
+
+pre:
+	python -m pre_commit run --all-files --show-diff-on-failure
