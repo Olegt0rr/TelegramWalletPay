@@ -1,4 +1,6 @@
-from typing import Literal, Optional
+from __future__ import annotations
+
+from typing import Literal
 
 from telegram_wallet_pay.enums import RequestStatus
 
@@ -12,5 +14,5 @@ class GetOrderReconciliationListResponse(DefaultModel):
         RequestStatus.INVALID_REQUEST,
         RequestStatus.INTERNAL_ERROR,
     ]
-    message: Optional[str] = None
-    data: Optional[OrderReconciliationList] = None
+    message: str | None = None
+    data: OrderReconciliationList | None = None

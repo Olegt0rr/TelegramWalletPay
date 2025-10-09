@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from pydantic import Field
 
@@ -14,8 +15,8 @@ class WebhookPayload(DefaultModel):
     id: int
     number: str
     external_id: str = Field(max_length=255)
-    status: Optional[OrderStatus] = None
-    custom_data: Optional[str] = Field(None, max_length=255)
+    status: OrderStatus | None = None
+    custom_data: str | None = Field(None, max_length=255)
     order_amount: MoneyAmount
-    selected_payment_option: Optional[PaymentOption] = None
+    selected_payment_option: PaymentOption | None = None
     order_completed_datetime: datetime = Field(alias="orderCompletedDateTime")

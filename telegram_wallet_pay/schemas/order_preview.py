@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Literal, Optional
+from typing import Literal
 
 from pydantic import Field
 
@@ -19,16 +21,17 @@ class OrderPreview(DefaultModel):
     ]
     number: str
     amount: MoneyAmount
-    auto_conversion_currency: Optional[
+    auto_conversion_currency: (
         Literal[
             Currency.TON,
             Currency.NOT,
             Currency.BTC,
             Currency.USDT,
         ]
-    ] = None
+        | None
+    ) = None
     created_datetime: datetime = Field(alias="createdDateTime")
     expiration_datetime: datetime = Field(alias="expirationDateTime")
-    completed_datetime: Optional[datetime] = Field(None, alias="completedDateTime")
+    completed_datetime: datetime | None = Field(None, alias="completedDateTime")
     pay_link: str
     direct_pay_link: str

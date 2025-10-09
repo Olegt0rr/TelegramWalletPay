@@ -10,7 +10,6 @@ from http import HTTPStatus
 from typing import (
     Any,
     Literal,
-    Optional,
     TypeVar,
 )
 
@@ -59,7 +58,7 @@ class TelegramWalletPay:
             raise RuntimeError(msg)
 
         self._base_url = api_host
-        self._session: Optional[ClientSession] = None
+        self._session: ClientSession | None = None
         self._headers = {AUTH_HEADER: token}
 
     async def create_order(  # noqa: PLR0913
@@ -79,17 +78,18 @@ class TelegramWalletPay:
         external_id: str,
         timeout_seconds: int,
         customer_telegram_user_id: int,
-        auto_conversion_currency: Optional[
+        auto_conversion_currency: (
             Literal[
                 Currency.TON,
                 Currency.NOT,
                 Currency.BTC,
                 Currency.USDT,
             ]
-        ] = None,
-        return_url: Optional[str] = None,
-        fail_return_url: Optional[str] = None,
-        custom_data: Optional[str] = None,
+            | None
+        ) = None,
+        return_url: str | None = None,
+        fail_return_url: str | None = None,
+        custom_data: str | None = None,
     ) -> CreateOrderResponse:
         """Create an order.
 
@@ -215,8 +215,8 @@ class TelegramWalletPay:
         self,
         method: str,
         url: str,
-        params: Optional[Mapping[str, str]] = None,
-        json: Optional[Mapping[str, str]] = None,
+        params: Mapping[str, str] | None = None,
+        json: Mapping[str, str] | None = None,
     ) -> AsyncIterator[ClientResponse]:
         """Make request with cached session."""
         session = await self._get_session()
