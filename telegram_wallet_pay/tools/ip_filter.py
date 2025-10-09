@@ -7,9 +7,11 @@ Docs:
 https://docs.wallet.tg/pay/#operation/completedOrder
 """
 
+from __future__ import annotations
+
 from collections.abc import Sequence
 from ipaddress import IPv4Address, IPv4Network
-from typing import Any, Union
+from typing import Any
 
 DEFAULT_WALLET_WEBHOOK_IPS = (
     IPv4Address("172.255.248.29"),
@@ -23,7 +25,7 @@ class IPFilter:
     def __init__(
         self,
         ips: Sequence[
-            Union[str, IPv4Network, IPv4Address]
+            str | IPv4Network | IPv4Address
         ] = DEFAULT_WALLET_WEBHOOK_IPS,
     ) -> None:
         self._allowed_ips: set[IPv4Address] = set()
@@ -31,19 +33,19 @@ class IPFilter:
         if ips:
             self.allow_ip(*ips)
 
-    def allow_ip(self, *ips: Union[str, IPv4Network, IPv4Address]) -> None:
+    def allow_ip(self, *ips: str | IPv4Network | IPv4Address) -> None:
         """Add IP or network to allowed list."""
         for ip in ips:
             ip_list = self._convert_ips(ip)
             self._allowed_ips.update(ip_list)
 
-    def check(self, ip: Union[str, IPv4Address]) -> bool:
+    def check(self, ip: str | IPv4Address) -> bool:
         """Check IP is allowed."""
         if not isinstance(ip, IPv4Address):
             ip = IPv4Address(ip)
         return ip in self._allowed_ips
 
-    def __contains__(self, item: Union[str, IPv4Address]) -> bool:
+    def __contains__(self, item: str | IPv4Address) -> bool:
         """Check IP is in allowed list."""
         return self.check(item)
 

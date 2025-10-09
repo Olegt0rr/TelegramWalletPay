@@ -1,4 +1,4 @@
-from typing import Union
+from __future__ import annotations
 
 import pytest
 from telegram_wallet_pay.tools import compute_signature
@@ -34,7 +34,7 @@ from telegram_wallet_pay.tools import compute_signature
         ),
     ],
 )
-def test_signature(body: Union[str, bytes]) -> None:
+def test_signature(body: str | bytes) -> None:
     """Test signature provided by docs."""
     signature = compute_signature(
         store_api_key="your_secret_api_key_sYIpNypce5sls6Ik",
@@ -47,7 +47,7 @@ def test_signature(body: Union[str, bytes]) -> None:
     assert signature == "MGfJzeEprADZbihhRcGcCY5pYTI/IEJ91ejyA+XOWAs="
 
 
-def test_empty_key(body: Union[str, bytes]) -> None:
+def test_empty_key(body: str | bytes) -> None:
     """Test signature provided by docs."""
     with pytest.raises(
         expected_exception=ValueError,

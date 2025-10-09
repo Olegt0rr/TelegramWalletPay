@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import asyncio
 import ssl
 import warnings
@@ -5,13 +7,10 @@ from collections.abc import AsyncIterator, Mapping
 from contextlib import asynccontextmanager
 from decimal import Decimal
 from http import HTTPStatus
-from typing import (
-    Any,
-    Literal,
-    Optional,
-    TypeVar,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, TypeVar
+
+if TYPE_CHECKING:
+    from typing import Literal
 
 import certifi
 from aiohttp import ClientResponse, ClientSession, TCPConnector
@@ -40,7 +39,7 @@ T = TypeVar("T", bound=BaseModel)
 AUTH_HEADER = "Wpay-Store-Api-Key"
 DEFAULT_API_HOST = "https://pay.wallet.tg"
 
-EXCEPTIONS_MAPPING: dict[Union[HTTPStatus, int], type[TelegramWalletPayError]] = {
+EXCEPTIONS_MAPPING: dict[HTTPStatus | int, type[TelegramWalletPayError]] = {
     HTTPStatus.BAD_REQUEST: InvalidRequestError,
     HTTPStatus.UNAUTHORIZED: InvalidAPIKeyError,
     HTTPStatus.NOT_FOUND: NotFountError,
@@ -58,13 +57,13 @@ class TelegramWalletPay:
             raise RuntimeError(msg)
 
         self._base_url = api_host
-        self._session: Optional[ClientSession] = None
+        self._session: ClientSession | None = None
         self._headers = {AUTH_HEADER: token}
 
     async def create_order(  # noqa: PLR0913
         self,
         *,
-        amount: Union[str, Decimal, float],
+        amount: str | Decimal | float,
         currency_code: Literal[
             Currency.TON,
             Currency.NOT,
@@ -78,17 +77,15 @@ class TelegramWalletPay:
         external_id: str,
         timeout_seconds: int,
         customer_telegram_user_id: int,
-        auto_conversion_currency: Optional[
-            Literal[
-                Currency.TON,
-                Currency.NOT,
-                Currency.BTC,
-                Currency.USDT,
-            ]
-        ] = None,
-        return_url: Optional[str] = None,
-        fail_return_url: Optional[str] = None,
-        custom_data: Optional[str] = None,
+        auto_conversion_currency: Literal[
+            Currency.TON,
+            Currency.NOT,
+            Currency.BTC,
+            Currency.USDT,
+        ] | None = None,
+        return_url: str | None = None,
+        fail_return_url: str | None = None,
+        custom_data: str | None = None,
     ) -> CreateOrderResponse:
         """Create an order.
 
@@ -214,8 +211,8 @@ class TelegramWalletPay:
         self,
         method: str,
         url: str,
-        params: Optional[Mapping[str, str]] = None,
-        json: Optional[Mapping[str, str]] = None,
+        params: Mapping[str, str] | None = None,
+        json: Mapping[str, str] | None = None,
     ) -> AsyncIterator[ClientResponse]:
         """Make request with cached session."""
         session = await self._get_session()

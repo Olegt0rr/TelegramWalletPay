@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from ipaddress import IPv4Address, IPv4Network
-from typing import Union
 
 import pytest
 from telegram_wallet_pay.tools.ip_filter import DEFAULT_WALLET_WEBHOOK_IPS, IPFilter
@@ -25,7 +26,7 @@ def test_default_init() -> None:
         ("10.111.1.100", False),
     ],
 )
-def test_check_ip(ip: Union[str, IPv4Address], result: bool) -> None:
+def test_check_ip(ip: str | IPv4Address, result: bool) -> None:
     ip_filter = IPFilter(
         ips=[
             "127.0.0.1",

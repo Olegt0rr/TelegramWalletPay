@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 from collections.abc import Iterator
 from datetime import datetime
-from typing import Literal
+from typing import TYPE_CHECKING
 
 from pydantic import Field
 
@@ -8,6 +10,9 @@ from telegram_wallet_pay.enums import WebhookMessageType
 
 from ._default import DefaultModel, DefaultRootModel
 from .webhook_payload import WebhookPayload
+
+if TYPE_CHECKING:
+    from typing import Literal
 
 
 class WebhookMessage(DefaultModel):

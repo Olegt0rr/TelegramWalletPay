@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import json
 from collections.abc import Awaitable
 from functools import wraps
 from secrets import compare_digest
-from typing import Callable, Optional, TypeVar
+from typing import Callable, TypeVar
 
 from aiohttp import web
 
@@ -53,7 +55,7 @@ def get_timestamp(request: web.Request) -> str:
 
 def check_signature(
     store_api_key: str,
-    custom_exception: Optional[web.HTTPClientError] = None,
+    custom_exception: web.HTTPClientError | None = None,
 ) -> Callable:
     """Decorate aiohttp handler to check signature first."""
     exception = custom_exception or web.HTTPBadRequest(

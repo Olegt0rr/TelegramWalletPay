@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from secrets import compare_digest
-from typing import Optional
 
 from fastapi import Depends, HTTPException, Request
 
@@ -55,7 +56,7 @@ class CheckSignature:
     def __init__(
         self,
         store_api_key: str,
-        custom_exception: Optional[HTTPException] = None,
+        custom_exception: HTTPException | None = None,
     ) -> None:
         self.__store_api_key = store_api_key
         self._exception = custom_exception or HTTPException(
