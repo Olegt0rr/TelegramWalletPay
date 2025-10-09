@@ -1,11 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import Literal
 
 from pydantic import Field
-
-if TYPE_CHECKING:
-    from typing import Literal
 
 from telegram_wallet_pay.enums import Currency
 

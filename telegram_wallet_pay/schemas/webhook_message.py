@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from collections.abc import Iterator
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from pydantic import Field
 
@@ -12,7 +11,7 @@ from ._default import DefaultModel, DefaultRootModel
 from .webhook_payload import WebhookPayload
 
 if TYPE_CHECKING:
-    from typing import Literal
+    from collections.abc import Iterator
 
 
 class WebhookMessage(DefaultModel):

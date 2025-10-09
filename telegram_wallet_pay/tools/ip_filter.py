@@ -9,9 +9,11 @@ https://docs.wallet.tg/pay/#operation/completedOrder
 
 from __future__ import annotations
 
-from collections.abc import Sequence
 from ipaddress import IPv4Address, IPv4Network
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 DEFAULT_WALLET_WEBHOOK_IPS = (
     IPv4Address("172.255.248.29"),
