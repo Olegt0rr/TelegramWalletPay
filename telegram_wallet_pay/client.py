@@ -3,13 +3,13 @@ from __future__ import annotations
 import asyncio
 import ssl
 import warnings
-from collections.abc import AsyncIterator, Mapping
 from contextlib import asynccontextmanager
-from decimal import Decimal
 from http import HTTPStatus
 from typing import TYPE_CHECKING, Any, TypeVar
 
 if TYPE_CHECKING:
+    from collections.abc import AsyncIterator, Mapping
+    from decimal import Decimal
     from typing import Literal
 
 import certifi

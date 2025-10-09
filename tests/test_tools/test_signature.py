@@ -51,7 +51,7 @@ def test_empty_key(body: str | bytes) -> None:
     """Test signature provided by docs."""
     with pytest.raises(
         expected_exception=ValueError,
-        match="Argument 'store_api_key' should not be empty.*",
+        match=r"Argument 'store_api_key' should not be empty.*",
     ):
         compute_signature(
             store_api_key="",

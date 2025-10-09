@@ -16,4 +16,4 @@ class DefaultModel(BaseModel):
 
 
 class DefaultRootModel(RootModel):
-    model_config = _model_config  # noqa: pyCharm bug
+    model_config = _model_config
