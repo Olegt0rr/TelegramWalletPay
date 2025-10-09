@@ -7,11 +7,10 @@ from collections.abc import AsyncIterator, Mapping
 from contextlib import asynccontextmanager
 from decimal import Decimal
 from http import HTTPStatus
-from typing import (
-    Any,
-    Literal,
-    TypeVar,
-)
+from typing import TYPE_CHECKING, Any, TypeVar
+
+if TYPE_CHECKING:
+    from typing import Literal
 
 import certifi
 from aiohttp import ClientResponse, ClientSession, TCPConnector
@@ -78,15 +77,12 @@ class TelegramWalletPay:
         external_id: str,
         timeout_seconds: int,
         customer_telegram_user_id: int,
-        auto_conversion_currency: (
-            Literal[
-                Currency.TON,
-                Currency.NOT,
-                Currency.BTC,
-                Currency.USDT,
-            ]
-            | None
-        ) = None,
+        auto_conversion_currency: Literal[
+            Currency.TON,
+            Currency.NOT,
+            Currency.BTC,
+            Currency.USDT,
+        ] | None = None,
         return_url: str | None = None,
         fail_return_url: str | None = None,
         custom_data: str | None = None,
