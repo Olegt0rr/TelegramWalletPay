@@ -1,7 +1,8 @@
+from __future__ import annotations
+
 import hashlib
 import hmac
 from base64 import b64encode
-from typing import Union
 
 ENCODING = "utf-8"
 
@@ -10,8 +11,8 @@ def compute_signature(
     store_api_key: str,
     http_method: str,
     uri_path: str,
-    timestamp: Union[str, float],
-    body: Union[str, bytes],
+    timestamp: str | float,
+    body: str | bytes,
 ) -> str:
     """Compute signature."""
     if not store_api_key:

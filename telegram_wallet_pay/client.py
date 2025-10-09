@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import asyncio
 import ssl
 import warnings
@@ -10,7 +12,6 @@ from typing import (
     Literal,
     Optional,
     TypeVar,
-    Union,
 )
 
 import certifi
@@ -40,7 +41,7 @@ T = TypeVar("T", bound=BaseModel)
 AUTH_HEADER = "Wpay-Store-Api-Key"
 DEFAULT_API_HOST = "https://pay.wallet.tg"
 
-EXCEPTIONS_MAPPING: dict[Union[HTTPStatus, int], type[TelegramWalletPayError]] = {
+EXCEPTIONS_MAPPING: dict[HTTPStatus | int, type[TelegramWalletPayError]] = {
     HTTPStatus.BAD_REQUEST: InvalidRequestError,
     HTTPStatus.UNAUTHORIZED: InvalidAPIKeyError,
     HTTPStatus.NOT_FOUND: NotFountError,
@@ -64,7 +65,7 @@ class TelegramWalletPay:
     async def create_order(  # noqa: PLR0913
         self,
         *,
-        amount: Union[str, Decimal, float],
+        amount: str | Decimal | float,
         currency_code: Literal[
             Currency.TON,
             Currency.NOT,
