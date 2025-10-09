@@ -82,7 +82,8 @@ class TelegramWalletPay:
             Currency.NOT,
             Currency.BTC,
             Currency.USDT,
-        ] | None = None,
+        ]
+        | None = None,
         return_url: str | None = None,
         fail_return_url: str | None = None,
         custom_data: str | None = None,

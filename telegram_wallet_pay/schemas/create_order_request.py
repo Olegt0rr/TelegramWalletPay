@@ -15,12 +15,15 @@ from .money_amount import MoneyAmount
 
 class CreateOrderRequest(DefaultModel):
     amount: MoneyAmount
-    auto_conversion_currency: Literal[
-        Currency.TON,
-        Currency.NOT,
-        Currency.BTC,
-        Currency.USDT,
-    ] | None = None
+    auto_conversion_currency: (
+        Literal[
+            Currency.TON,
+            Currency.NOT,
+            Currency.BTC,
+            Currency.USDT,
+        ]
+        | None
+    ) = None
     description: str = Field(min_length=5, max_length=100)
     return_url: str | None = Field(None, max_length=255)
     fail_return_url: str | None = Field(None, max_length=255)

@@ -24,12 +24,15 @@ class OrderPreview(DefaultModel):
     ]
     number: str
     amount: MoneyAmount
-    auto_conversion_currency: Literal[
-        Currency.TON,
-        Currency.NOT,
-        Currency.BTC,
-        Currency.USDT,
-    ] | None = None
+    auto_conversion_currency: (
+        Literal[
+            Currency.TON,
+            Currency.NOT,
+            Currency.BTC,
+            Currency.USDT,
+        ]
+        | None
+    ) = None
     created_datetime: datetime = Field(alias="createdDateTime")
     expiration_datetime: datetime = Field(alias="expirationDateTime")
     completed_datetime: datetime | None = Field(None, alias="completedDateTime")

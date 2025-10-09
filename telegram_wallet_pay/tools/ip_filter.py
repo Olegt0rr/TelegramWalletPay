@@ -24,9 +24,7 @@ class IPFilter:
 
     def __init__(
         self,
-        ips: Sequence[
-            str | IPv4Network | IPv4Address
-        ] = DEFAULT_WALLET_WEBHOOK_IPS,
+        ips: Sequence[str | IPv4Network | IPv4Address] = DEFAULT_WALLET_WEBHOOK_IPS,
     ) -> None:
         self._allowed_ips: set[IPv4Address] = set()
 

@@ -24,12 +24,15 @@ class OrderReconciliationItem(DefaultModel):
         OrderStatus.CANCELLED,
     ]
     amount: MoneyAmount
-    auto_conversion_currency: Literal[
-        Currency.TON,
-        Currency.NOT,
-        Currency.BTC,
-        Currency.USDT,
-    ] | None = None
+    auto_conversion_currency: (
+        Literal[
+            Currency.TON,
+            Currency.NOT,
+            Currency.BTC,
+            Currency.USDT,
+        ]
+        | None
+    ) = None
     external_id: str
     customer_telegram_user_id: int | None = None
     created_datetime: datetime = Field(alias="createdDateTime")
