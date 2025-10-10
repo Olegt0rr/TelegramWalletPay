@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Literal
+from typing import Literal, Optional
 
 from pydantic import Field
 
@@ -21,15 +21,14 @@ class OrderReconciliationItem(DefaultModel):
         OrderStatus.CANCELLED,
     ]
     amount: MoneyAmount
-    auto_conversion_currency: (
+    auto_conversion_currency: Optional[
         Literal[
             Currency.TON,
             Currency.NOT,
             Currency.BTC,
             Currency.USDT,
         ]
-        | None
-    ) = None
+    ] = None
     external_id: str
     customer_telegram_user_id: int | None = None
     created_datetime: datetime = Field(alias="createdDateTime")
