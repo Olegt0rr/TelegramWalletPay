@@ -75,9 +75,6 @@ optional-dependencies.test = [
 urls.Documentation = "https://docs.wallet.tg/pay/"
 urls.Repository = "https://github.com/Olegt0rr/TelegramWalletPay"
 
-[tool.hatch.version]
-path = "telegram_wallet_pay/__init__.py"
-
 [tool.hatch.build.targets.sdist]
 exclude = [
   "/.github",
@@ -106,6 +103,9 @@ features = [
 
 [[tool.hatch.envs.test.matrix]]
 python = [ "3.9", "310", "311", "312", "313" ]
+
+[tool.hatch.version]
+path = "telegram_wallet_pay/__init__.py"
 
 [tool.ruff]
 # Assume minimal Python version
