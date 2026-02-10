@@ -1,6 +1,5 @@
 [build-system]
 build-backend = "hatchling.build"
-
 requires = [ "hatchling" ]
 
 [project]
@@ -45,14 +44,12 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Application Frameworks",
   "Typing :: Typed",
 ]
-
 dynamic = [ "version" ]
 dependencies = [
   "aiohttp>=3.8,<4",
   "certifi>=2023",
   "pydantic>=2.4,<3",
 ]
-
 optional-dependencies.dev = [
   "aiogram>=3.6,<4",
   "fastapi-slim>=0.111,<1",
@@ -75,47 +72,34 @@ optional-dependencies.test = [
 urls.Documentation = "https://docs.wallet.tg/pay/"
 urls.Repository = "https://github.com/Olegt0rr/TelegramWalletPay"
 
-[tool.hatch.build.targets.sdist]
-exclude = [
+[tool.hatch]
+build.targets.sdist.exclude = [
   "/.github",
 ]
-
-[tool.hatch.envs.default]
-features = [
+envs.default.features = [
   "dev",
   "test",
 ]
-post-install-commands = [
+envs.default.post-install-commands = [
   "pre-commit install",
 ]
-
-[tool.hatch.envs.default.scripts]
-lint = [
+envs.default.scripts.lint = [
   "ruff check telegram_wallet_pay --fix",
 ]
-
-[tool.hatch.envs.dev]
-python = "3.9"
-features = [
+envs.dev.python = "3.9"
+envs.dev.features = [
   "dev",
   "test",
 ]
-
-[[tool.hatch.envs.test.matrix]]
-python = [ "3.9", "310", "311", "312", "313" ]
-
-[tool.hatch.version]
-path = "telegram_wallet_pay/__init__.py"
+envs.test.matrix = [ { python = [ "3.9", "310", "311", "312", "313" ] } ]
+version.path = "telegram_wallet_pay/__init__.py"
 
 [tool.ruff]
 # Assume minimal Python version
 target-version = "py39"
-
 # Same as Black.
 line-length = 88
-
 src = [ "app", "tests", "tools" ]
-
 # Exclude a variety of commonly ignored directories.
 exclude = [
   ".bzr",
@@ -138,7 +122,6 @@ exclude = [
   "node_modules",
   "venv",
 ]
-
 lint.select = [ "ALL" ]
 lint.ignore = [
   "A003",
@@ -166,7 +149,7 @@ lint.ignore = [
 lint.per-file-ignores."examples/*" = [ "INP001", "T201" ]
 lint.per-file-ignores."tests/*" = [ "ANN401", "D", "FBT001", "INP001", "S101", "SLF001" ]
 lint.fixable = [ "ALL" ]
-lint.unfixable = [  ]
+lint.unfixable = []
 # Allow unused variables when underscore-prefixed.
 lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 lint.flake8-type-checking.runtime-evaluated-base-classes = [
@@ -175,23 +158,23 @@ lint.flake8-type-checking.runtime-evaluated-base-classes = [
 ]
 lint.mccabe.max-complexity = 10
 
-[tool.pytest.ini_options]
-asyncio_mode = "auto"
-testpaths = [
+[tool.pytest]
+ini_options.asyncio_mode = "auto"
+ini_options.testpaths = [
   "tests",
 ]
-filterwarnings = [
+ini_options.filterwarnings = [
   "error",
   "ignore::pytest.PytestUnraisableExceptionWarning",
 ]
 
-[tool.coverage.report]
-exclude_lines = [
-  "if __name__ == .__main__.:",
-  "pragma: no cover",
-  "if TYPE_CHECKING:",
+[tool.coverage]
+report.exclude_lines = [
   "@abstractmethod",
   "@overload",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "pragma: no cover",
 ]
 
 [tool.mypy]
@@ -200,15 +183,8 @@ warn_unused_ignores = false
 warn_no_return = true
 warn_unreachable = true
 pretty = true
-
-[[tool.mypy.overrides]]
-module = "*.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "tests.*"
-ignore_errors = true
-
-[[tool.mypy.overrides]]
-module = "examples.*"
-ignore_errors = true
+overrides = [
+  { module = "*.*", ignore_missing_imports = true },
+  { module = "tests.*", ignore_errors = true },
+  { module = "examples.*", ignore_errors = true },
+]
