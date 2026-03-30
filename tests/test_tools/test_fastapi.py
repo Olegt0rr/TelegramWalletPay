@@ -40,6 +40,7 @@ def test_success(
     headers = {
         "WalletPay-Timestamp": timestamp,
         "WalletPay-Signature": signature,
+        "Content-Type": "application/json",
     }
     response = client.post(path, headers=headers, content=body)
     assert response.status_code == status.HTTP_200_OK
