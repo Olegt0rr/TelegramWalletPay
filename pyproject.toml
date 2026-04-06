@@ -158,6 +158,18 @@ lint.flake8-type-checking.runtime-evaluated-base-classes = [
 ]
 lint.mccabe.max-complexity = 10
 
+[tool.mypy]
+warn_redundant_casts = true
+warn_unused_ignores = false
+warn_no_return = true
+warn_unreachable = true
+pretty = true
+overrides = [
+  { module = "*.*", ignore_missing_imports = true },
+  { module = "tests.*", ignore_errors = true },
+  { module = "examples.*", ignore_errors = true },
+]
+
 [tool.pytest]
 ini_options.asyncio_mode = "auto"
 ini_options.testpaths = [
@@ -175,16 +187,4 @@ report.exclude_lines = [
   "if __name__ == .__main__.:",
   "if TYPE_CHECKING:",
   "pragma: no cover",
-]
-
-[tool.mypy]
-warn_redundant_casts = true
-warn_unused_ignores = false
-warn_no_return = true
-warn_unreachable = true
-pretty = true
-overrides = [
-  { module = "*.*", ignore_missing_imports = true },
-  { module = "tests.*", ignore_errors = true },
-  { module = "examples.*", ignore_errors = true },
 ]
