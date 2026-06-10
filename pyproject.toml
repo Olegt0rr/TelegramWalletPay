@@ -64,6 +64,7 @@ optional-dependencies.test = [
   "coverage>=7,<8",
   "fastapi-slim>=0.111,<1",
   "httpx>=0.27,<1",
+  "httpx2>=2,<3",
   "pytest>=8,<9",
   "pytest-aiohttp>=1,<2",
   "pytest-asyncio>=0,<2",
@@ -73,6 +74,7 @@ urls.Documentation = "https://docs.wallet.tg/pay/"
 urls.Repository = "https://github.com/Olegt0rr/TelegramWalletPay"
 
 [tool.hatch]
+version.path = "telegram_wallet_pay/__init__.py"
 build.targets.sdist.exclude = [
   "/.github",
 ]
@@ -92,7 +94,6 @@ envs.dev.features = [
   "test",
 ]
 envs.test.matrix = [ { python = [ "3.9", "310", "311", "312", "313" ] } ]
-version.path = "telegram_wallet_pay/__init__.py"
 
 [tool.ruff]
 # Assume minimal Python version
@@ -171,7 +172,6 @@ overrides = [
 ]
 
 [tool.pytest]
-ini_options.asyncio_mode = "auto"
 ini_options.testpaths = [
   "tests",
 ]
@@ -179,6 +179,7 @@ ini_options.filterwarnings = [
   "error",
   "ignore::pytest.PytestUnraisableExceptionWarning",
 ]
+ini_options.asyncio_mode = "auto"
 
 [tool.coverage]
 report.exclude_lines = [
